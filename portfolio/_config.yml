@@ -1,0 +1,36 @@
+title: "Your Name"
+description: "Developer & builder — sharing projects and what I learn along the way."
+author: "Your Name"
+email: "you@email.com"
+github_username: yourusername
+
+baseurl: ""
+url: "https://yourusername.github.io"
+
+# Build settings
+markdown: kramdown
+permalink: /blog/:title/
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
