@@ -1,11 +1,11 @@
-title: "Your Name"
-description: "Developer & builder — sharing projects and what I learn along the way."
-author: "Your Name"
+title: "Reuben Larsen's Portfolio"
+description: "Aerospace Engineer — sharing projects over the years."
+author: "Reuben Larsen"
 email: "you@email.com"
 github_username: yourusername
 
 baseurl: "/Portfolio"
-url: "https://yourusername.github.io"
+url: "https://Reub2003.github.io/Portfolio"
 
 # Build settings
 markdown: kramdown
