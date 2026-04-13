@@ -1,10 +1,10 @@
 ---
 title: "BlueSAT — Groundstation Lead"
-description: "Led the groundstation team at BlueSAT (UNSW's project-based space society), taking the project from a 4-person v0 build through to a fully custom v1 design."
+description: "Led the groundstation team at BlueSAT (UNSW's project-based space society), taking the project from a 4-person v0 build through to a fully custom v1 design with 18 members at peak."
 tech: [RF Systems, Hardware, Systems Engineering]
 image: "/Portfolio/assets/images/bluesat-groundstation.jpg"
 featured: true
-status: "Ongoing"
+status: "Stepped Down"
 ---
 
 ## What is BlueSAT?
