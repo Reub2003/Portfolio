@@ -4,7 +4,7 @@ author: "Your Name"
 email: "you@email.com"
 github_username: yourusername
 
-baseurl: ""
+baseurl: "/Portfolio"
 url: "https://yourusername.github.io"
 
 # Build settings
