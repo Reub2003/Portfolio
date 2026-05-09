@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Log — Reuben Larsen</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* Page-specific */
+  .page-hero {
+    padding: calc(180px * var(--d)) var(--pad-x) calc(60px * var(--d));
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .page-hero::after {
+    content: "";
+    position: absolute;
+    left: var(--pad-x); right: var(--pad-x);
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+  }
+  .page-hero .eyebrow-row {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 28px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .page-hero .eyebrow-row .amber { color: var(--accent); }
+  .page-hero .eyebrow-row .sep { color: var(--ink-faint); }
+  .page-hero .eyebrow-row .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .page-hero .eyebrow-row .live::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: ping-amber 2s ease-in-out infinite;
+  }
+
+  .page-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: clamp(80px, 14vw, 220px);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .page-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .page-hero .sub {
+    margin-top: 36px;
+    max-width: 60ch;
+    color: var(--ink-dim);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .page-hero .sub b { color: var(--ink); font-weight: 500; }
+
+  /* Notebook log list */
+  .notebook {
+    padding: 60px var(--pad-x) calc(var(--pad-y) * 0.7);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .log-list {
+    list-style: none;
+    margin: 0; padding: 0;
+  }
+  .log-entry {
+    display: grid;
+    grid-template-columns: 80px 1fr 60px;
+    gap: 32px;
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+    transition: padding 0.25s;
+  }
+  .log-entry:hover { padding-left: 8px; }
+  .log-entry:last-of-type { border-bottom: 1px solid var(--rule); }
+  .log-entry .ix {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .log-entry .ix .num { color: var(--accent); }
+  .log-entry .body h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--ink);
+    transition: color 0.2s;
+  }
+  .log-entry:hover .body h3 { color: var(--accent); }
+  .log-entry .body p {
+    margin: 0 0 14px;
+    color: var(--ink-dim);
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 64ch;
+  }
+  .log-entry .meta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .log-entry .meta-row .tag {
+    border: 1px solid var(--rule-strong);
+    padding: 4px 8px;
+    color: var(--ink-dim);
+  }
+  .log-entry .meta-row .min {
+    color: var(--accent);
+  }
+  .log-entry .arrow {
+    font-family: var(--font-mono);
+    color: var(--ink-faint);
+    text-align: right;
+    transition: all 0.2s;
+  }
+  .log-entry:hover .arrow {
+    color: var(--accent);
+    transform: translateX(6px);
+  }
+
+  /* Sidebar */
+  .side {
+    position: sticky;
+    top: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .side h4 {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .side h4::before {
+    content: "▸";
+  }
+  .side .topic-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .side .topic-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .side .topic-list li:hover { color: var(--accent); }
+  .side .topic-list li .count { color: var(--ink-faint); }
+
+  .side .feed-block {
+    border: 1px solid var(--rule);
+    padding: 18px;
+    background: var(--surface);
+    color: var(--ink-dim);
+  }
+  .side .feed-block .row {
+    display: flex; justify-content: space-between;
+    padding: 4px 0;
+    text-transform: uppercase;
+  }
+  .side .feed-block .row b { color: var(--ink); font-weight: 500; }
+  .side .feed-block .amber { color: var(--accent); }
+
+  /* Empty state row */
+  .upcoming {
+    margin-top: 64px;
+    padding: 28px 32px;
+    border: 1px dashed var(--rule-strong);
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .upcoming::before {
+    content: "";
+    width: 8px; height: 8px;
+    border: 1px solid var(--accent);
+    transform: rotate(45deg);
+  }
+  .upcoming b { color: var(--ink); font-weight: 500; margin-right: 4px; }
+
+  @media (max-width: 920px) {
+    .notebook { grid-template-columns: 1fr; }
+    .side { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  (function(){
+    try {
+      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v1') || '{}');
+      var a = t.accent || '#f7a13c';
+      var P = {
+        navyAmber:    {bg:'#06101c',surface:'#0c1726',s2:'#131f30',ink:'#e8edf3',dim:'#8493a5',faint:'#4a5668'},
+        inkWhite:     {bg:'#0a0a0a',surface:'#141414',s2:'#1d1d1d',ink:'#f4f4f4',dim:'#888888',faint:'#444444'},
+        charcoalCyan: {bg:'#0e1418',surface:'#161e24',s2:'#1f2a32',ink:'#e8eef2',dim:'#7e8e98',faint:'#475058'},
+        hudGreen:     {bg:'#080c0a',surface:'#0e1410',s2:'#161e18',ink:'#e6f0e8',dim:'#7c8e80',faint:'#465048'},
+      };
+      var p = P[t.palette] || P.navyAmber;
+      var s = document.documentElement.style;
+      s.setProperty('--bg', p.bg); s.setProperty('--surface', p.surface);
+      s.setProperty('--surface-2', p.s2); s.setProperty('--ink', p.ink);
+      s.setProperty('--ink-dim', p.dim); s.setProperty('--ink-faint', p.faint);
+      s.setProperty('--accent', a);
+      var D = {compact:0.85, regular:1, comfy:1.15}; s.setProperty('--d', D[t.density]||1);
+    } catch(e){}
+  })();
+</script>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="glyph"></span>
+    <span class="meta">
+      <b>REUBEN&nbsp;LARSEN</b>
+      <i>N° AE-26 · SYDNEY · 33.8688°S</i>
+    </span>
+  </a>
+  <nav class="topnav">
+    <a href="index.html"><span class="num-tag">01</span>HOME</a>
+    <a href="index.html#work"><span class="num-tag">02</span>WORK</a>
+    <a href="blog.html" class="active"><span class="num-tag">03</span>LOG</a>
+    <a href="dashboard.html"><span class="num-tag">04</span>DASHBOARD</a>
+  </nav>
+</header>
+
+<section class="page-hero shell">
+  <div class="eyebrow-row">
+    <span class="live">FEED ACTIVE</span>
+    <span class="sep">/</span>
+    <span class="amber">VOL. I</span>
+    <span class="sep">/</span>
+    <span>01 ENTRY · MMXXV</span>
+    <span class="sep">/</span>
+    <span>UPDATED Q2 26</span>
+  </div>
+  <h1>The <em>log</em>.</h1>
+  <p class="sub">
+    An engineer's notebook. Things I'm building, things that broke, things I read
+    and want to remember. <b>Plain text. No analytics. No promises about cadence.</b>
+  </p>
+</section>
+
+<section class="notebook shell">
+  <div>
+    <ol class="log-list">
+
+      <li class="log-entry">
+        <div class="ix">
+          <div class="num">/ 01</div>
+          <div>2025·04</div>
+        </div>
+        <div class="body">
+          <h3>What I learned building<br/>my first project.</h3>
+          <p>
+            DESN1000 had us build an electric vehicle from scratch — and the
+            real lesson wasn't the chassis or the controller, it was the
+            battery. I hand-assembled cells from electrodes, anodes, and
+            electrolyte, watched half of them fail, and finally understood
+            why production cells are a small miracle of consistency.
+          </p>
+          <div class="meta-row">
+            <span class="tag">Build</span>
+            <span class="tag">Electrochem</span>
+            <span class="tag">DESN1000</span>
+            <span class="min">8 MIN READ</span>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+      </li>
+
+    </ol>
+
+    <div class="upcoming">
+      <b>NEXT IN QUEUE:</b>
+      <span>BlueSAT v1 retrospective · bearing rig log #00 · why I stopped trusting plots without units</span>
+    </div>
+  </div>
+
+  <aside class="side">
+    <div>
+      <h4>TOPICS</h4>
+      <ul class="topic-list">
+        <li><span>Bearings</span><span class="count">00</span></li>
+        <li><span>RF / BlueSAT</span><span class="count">00</span></li>
+        <li><span>CFD &amp; FEM</span><span class="count">00</span></li>
+        <li><span>Electrochem</span><span class="count">01</span></li>
+        <li><span>Notes &amp; Reading</span><span class="count">00</span></li>
+        <li><span>Vision / Space</span><span class="count">00</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>FEED</h4>
+      <div class="feed-block">
+        <div class="row"><span>POSTS</span><b class="num">01</b></div>
+        <div class="row"><span>WORDS</span><b class="num">~1.4K</b></div>
+        <div class="row"><span>SINCE</span><b class="num">APR&nbsp;25</b></div>
+        <div class="row"><span>STATUS</span><b class="amber">DRAFT-HEAVY</b></div>
+      </div>
+    </div>
+
+    <div>
+      <h4>SUBSCRIBE</h4>
+      <a class="cta" href="#" style="width:100%;justify-content:space-between;">
+        RSS
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+  </aside>
+</section>
+
+<footer class="foot">
+  <div class="col">
+    <b>REUBEN LARSEN</b>
+    <span>AEROSPACE · UNSW</span>
+    <span>FY26</span>
+  </div>
+  <div class="col">
+    <b>ELSEWHERE</b>
+    <a href="https://github.com/Reub2003">GITHUB ↗</a>
+    <a href="mailto:hello@example.com">EMAIL ↗</a>
+    <a href="#">RSS ↗</a>
+  </div>
+  <div class="col">
+    <b>INDEX</b>
+    <a href="index.html">HOME</a>
+    <a href="blog.html">LOG</a>
+    <a href="dashboard.html">DASHBOARD</a>
+  </div>
+  <div class="col" style="text-align:right">
+    <span class="num">MMXXVI · v1.0.0</span>
+    <span>BUILT IN SYDNEY</span>
+  </div>
+</footer>
+
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel">
+  ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+
+</body>
+</html>

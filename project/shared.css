@@ -1,0 +1,399 @@
+/* ─── Reuben Larsen — design tokens & base ──────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Oswald:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap");
+
+:root {
+  /* Palette — overridden by Tweaks panel via inline style */
+  --bg:        #06101c;
+  --bg-deep:   #03080f;
+  --surface:   #0c1726;
+  --surface-2: #131f30;
+  --ink:       #e8edf3;
+  --ink-dim:   #8493a5;
+  --ink-faint: #4a5668;
+  --rule:        rgba(255,255,255,0.07);
+  --rule-strong: rgba(255,255,255,0.18);
+  --accent:     #f7a13c;
+  --accent-dim: rgba(247,161,60,0.35);
+  --accent-glow: rgba(247,161,60,0.18);
+
+  /* Typography */
+  --font-display: "Archivo Narrow", "Archivo", "Helvetica Neue", sans-serif;
+  --font-body:    "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Density (1 = regular, 0.85 = compact, 1.15 = comfy) */
+  --d: 1;
+  --pad-x: calc(40px * var(--d));
+  --pad-y: calc(120px * var(--d));
+  --maxw: 1480px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Cinematic film-grain & vignette pulled together */
+  background:
+    radial-gradient(140% 90% at 50% -10%, rgba(247,161,60,0.06), transparent 55%),
+    radial-gradient(120% 80% at 50% 110%, rgba(60,90,140,0.10), transparent 60%),
+    var(--bg);
+}
+
+/* faint scan-lines overlay everywhere */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.012) 0,
+    rgba(255,255,255,0.012) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ── Type ─────────────────────────────────────────────── */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  font-stretch: condensed;
+}
+.eyebrow,
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: calc(11px * var(--d));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.amber { color: var(--accent); }
+.dim   { color: var(--ink-dim); }
+.faint { color: var(--ink-faint); }
+
+/* ── Layout ───────────────────────────────────────────── */
+
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.rule {
+  height: 1px;
+  background: var(--rule);
+  width: 100%;
+}
+
+.rule-strong { background: var(--rule-strong); }
+
+/* ── Top nav ──────────────────────────────────────────── */
+
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--pad-x);
+  background: linear-gradient(to bottom, rgba(6,16,28,0.92), rgba(6,16,28,0.55) 70%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+}
+.topbar .brand .glyph {
+  width: 22px; height: 22px;
+  position: relative;
+}
+.topbar .brand .glyph::before,
+.topbar .brand .glyph::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+}
+.topbar .brand .glyph::after {
+  inset: 6px;
+  border-color: var(--ink);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, var(--accent) 30%, transparent 32%);
+  border: none;
+}
+.topbar .brand .meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.topbar .brand .meta b { font-weight: 500; color: var(--ink); }
+.topbar .brand .meta i { font-style: normal; color: var(--ink-dim); font-size: 10px; }
+
+.topnav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.topnav a {
+  position: relative;
+  color: var(--ink-dim);
+  transition: color 0.2s;
+  padding: 6px 0;
+}
+.topnav a:hover { color: var(--ink); }
+.topnav a.active { color: var(--ink); }
+.topnav a.active::before {
+  content: "";
+  position: absolute;
+  left: -12px; top: 50%;
+  width: 4px; height: 4px;
+  margin-top: -2px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.topnav .num-tag {
+  color: var(--ink-faint);
+  font-size: 9px;
+  margin-right: 4px;
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+
+footer.foot {
+  border-top: 1px solid var(--rule);
+  padding: 60px var(--pad-x) 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  flex-wrap: wrap;
+}
+footer.foot .col { display: flex; flex-direction: column; gap: 6px; }
+footer.foot .col b { color: var(--ink); font-weight: 500; }
+footer.foot a:hover { color: var(--accent); }
+
+/* ── Telemetry strip ─────────────────────────────────── */
+
+.telemetry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+}
+.telemetry .cell {
+  padding: 18px 20px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.telemetry .cell:last-child { border-right: none; }
+.telemetry .cell .k {
+  font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.telemetry .cell .v {
+  font-size: 22px; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.telemetry .cell .v small {
+  color: var(--accent); font-size: 11px;
+  margin-left: 4px; letter-spacing: 0.06em;
+}
+
+/* ── Section header (number + title) ─────────────────── */
+
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding-top: 24px;
+  margin-bottom: 36px;
+  border-top: 1px solid var(--rule);
+}
+.sec-head .num {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  padding-top: 18px;
+}
+.sec-head h2 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 0.95;
+  margin: 14px 0 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+.sec-head .tail {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-top: 18px;
+  text-align: right;
+}
+
+/* ── Buttons / chips ─────────────────────────────────── */
+
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.chip::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.chip.idle::before {
+  background: var(--ink-faint);
+  box-shadow: none;
+}
+
+.cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 22px;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cta:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(247,161,60,0.06);
+}
+.cta .arrow { transition: transform 0.2s; }
+.cta:hover .arrow { transform: translateX(4px); }
+
+/* ── Animated orbit (hero decoration) ────────────────── */
+
+@keyframes spin-slow      { to { transform: rotate(360deg); } }
+@keyframes spin-slower    { to { transform: rotate(-360deg); } }
+@keyframes ping-amber     {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.6); }
+}
+@keyframes pan-up         { from { transform: translateY(8px); } to { transform: translateY(-8px); } }
+@keyframes ticker         {
+  0%, 30% { opacity: 0; }
+  35%, 95% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes scan-pass {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* ── Image placeholder (striped) ─────────────────────── */
+
+.placeholder-img {
+  position: relative;
+  background-color: var(--surface);
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.025) 0,
+      rgba(255,255,255,0.025) 2px,
+      transparent 2px,
+      transparent 9px
+    );
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  overflow: hidden;
+}
+.placeholder-img::before {
+  content: "";
+  position: absolute;
+  top: 12px; left: 12px;
+  width: 14px; height: 14px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+}
+.placeholder-img::after {
+  content: "";
+  position: absolute;
+  bottom: 12px; right: 12px;
+  width: 14px; height: 14px;
+  border-bottom: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+}
+
+/* ── Selection ────────────────────────────────────────── */
+
+::selection { background: var(--accent); color: var(--bg-deep); }
