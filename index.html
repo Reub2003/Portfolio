@@ -119,6 +119,18 @@
     font-size: clamp(15px, 1.05vw, 17px);
     line-height: 1.55;
     color: var(--ink-dim);
+    position: relative;
+  }
+  .hero-sub::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -16px;
+    width: 18px;
+    height: 22px;
+    border-bottom: 1px solid var(--accent);
+    border-left: 1px solid var(--accent);
+    pointer-events: none;
   }
   .hero-sub b { color: var(--ink); font-weight: 500; }
 
@@ -254,7 +266,6 @@
 
   <div class="hud-corner tl"></div>
   <div class="hud-corner tr"></div>
-  <div class="hud-corner bl"></div>
   <div class="hud-corner br"></div>
 
   <div class="hero-content">
