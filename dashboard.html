@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard — Reuben Larsen</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* ── Page hero ──────────────────────────────── */
+  .dash-hero {
+    padding: calc(170px * var(--d)) var(--pad-x) 60px;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .dash-hero::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: -40%;
+    width: 120vmin; height: 120vmin;
+    transform: translateX(-50%);
+    background:
+      radial-gradient(circle, transparent 49.7%, rgba(247,161,60,0.08) 49.85%, rgba(247,161,60,0.08) 50%, transparent 50.15%),
+      radial-gradient(circle, transparent 39.7%, rgba(132,147,165,0.08) 39.85%, rgba(132,147,165,0.08) 40%, transparent 40.15%);
+    animation: spin-slower 280s linear infinite;
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .dash-hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .dash-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: clamp(64px, 10vw, 160px);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin: 28px 0 0;
+  }
+  .dash-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .dash-hero h1 .dim {
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+  .dash-hero .eyebrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .dash-hero .eyebrow-row .live {
+    display: inline-flex;
+    align-items: center; gap: 8px;
+    color: var(--ink-dim);
+  }
+  .dash-hero .eyebrow-row .live::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: ping-amber 2.4s ease-in-out infinite;
+  }
+  .dash-hero .eyebrow-row .amber { color: var(--accent); }
+
+  .mc-panel {
+    border: 1px solid var(--rule);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent),
+      var(--surface);
+    padding: 24px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    position: relative;
+  }
+  .mc-panel::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 24px;
+    width: 64px; height: 1px;
+    background: var(--accent);
+  }
+  .mc-panel h4 {
+    margin: 0 0 18px;
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+  .mc-panel .mc-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 14px;
+    padding: 9px 0;
+    border-top: 1px solid var(--rule);
+    align-items: center;
+  }
+  .mc-panel .mc-row:first-of-type { border-top: none; }
+  .mc-panel .mc-row .k { color: var(--ink-faint); text-transform: uppercase; }
+  .mc-panel .mc-row .v { color: var(--ink); }
+  .mc-panel .mc-row .s {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    padding: 2px 6px;
+    border: 1px solid var(--accent-dim);
+  }
+  .mc-panel .mc-row .s.idle {
+    color: var(--ink-faint);
+    border-color: var(--rule-strong);
+  }
+
+  /* ── Horizons (timeline rail) ─────────────────── */
+  .horizons {
+    padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) * 0.4);
+  }
+  .horizon-rail {
+    position: relative;
+    margin-top: 60px;
+  }
+  .horizon-rail::before {
+    content: "";
+    position: absolute;
+    top: 18px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      var(--accent) 0%, var(--ink-dim) 35%, var(--ink-faint) 100%);
+    opacity: 0.6;
+  }
+  .horizon-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .horizon-col {
+    padding: 0 24px 0 0;
+    position: relative;
+  }
+  .horizon-col::before {
+    content: "";
+    position: absolute;
+    top: 14px; left: 0;
+    width: 9px; height: 9px;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+    transform: rotate(45deg);
+  }
+  .horizon-col.future::before {
+    border-color: var(--ink-faint);
+  }
+  .horizon-col .when {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 38px;
+  }
+  .horizon-col .when .span {
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .horizon-col .when.idle .span { color: var(--ink-dim); }
+  .horizon-col h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin: 14px 0 18px;
+  }
+  .horizon-col h3 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .horizon-col ul {
+    list-style: none;
+    margin: 0; padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .horizon-col ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-dim);
+    font-size: 13px;
+    line-height: 1.4;
+    display: flex;
+    gap: 10px;
+  }
+  .horizon-col ul li::before {
+    content: attr(data-ix);
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    width: 28px;
+    padding-top: 2px;
+  }
+
+  @media (max-width: 1100px) {
+    .horizon-cols { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .horizon-cols { grid-template-columns: 1fr; }
+  }
+
+  /* ── Bets ─────────────────────────────────────── */
+  .bets {
+    padding: calc(var(--pad-y) * 0.5) var(--pad-x) var(--pad-y);
+  }
+  .bet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .bet {
+    background: var(--bg);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 320px;
+    position: relative;
+    transition: background 0.25s;
+  }
+  .bet:hover {
+    background: var(--surface);
+  }
+  .bet .ix {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bet .ix .conf {
+    color: var(--ink-faint);
+  }
+  .bet .ix .conf b { color: var(--ink); font-weight: 500; }
+  .bet h4 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: clamp(26px, 2.3vw, 34px);
+    line-height: 1.05;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin: 4px 0 0;
+    color: var(--ink);
+  }
+  .bet h4 em { font-style: italic; color: var(--accent); font-weight: 500; }
+  .bet p {
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: 14px;
+    line-height: 1.55;
+    flex: 1;
+  }
+  .bet .meter {
+    height: 4px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .bet .meter::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: var(--p, 30%);
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+  .bet .meter-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bet .meter-row b { color: var(--ink); font-weight: 500; }
+
+  @media (max-width: 1100px) { .bet-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px)  { .bet-grid { grid-template-columns: 1fr; } }
+
+  /* ── Vision long-form ─────────────────────────── */
+  .vision {
+    padding: var(--pad-y) var(--pad-x);
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+  .vision .blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(36px, 4.5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    font-weight: 500;
+    margin: 0;
+  }
+  .vision .blockquote em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .vision .blockquote::before {
+    content: "“";
+    display: block;
+    font-size: 1.5em;
+    line-height: 0.5;
+    color: var(--accent);
+    font-style: normal;
+    margin-bottom: 16px;
+  }
+  .vision .body {
+    color: var(--ink-dim);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .vision .body p { margin: 0 0 18px; }
+  .vision .body p b { color: var(--ink); font-weight: 500; }
+  .vision .signoff {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .vision .signoff b { color: var(--ink); font-weight: 500; }
+
+  @media (max-width: 920px) { .vision { grid-template-columns: 1fr; } }
+
+  /* ── Awaiting transmission (placeholder) ─────── */
+  .awaiting {
+    margin: 0 var(--pad-x) var(--pad-y);
+    border: 1px dashed var(--rule-strong);
+    padding: 36px 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .awaiting .icon {
+    width: 14px; height: 14px;
+    border: 1px solid var(--accent);
+    transform: rotate(45deg);
+    animation: ping-amber 2.4s ease-in-out infinite;
+  }
+  .awaiting b { color: var(--ink); font-weight: 500; }
+  .awaiting .amber { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<script>
+  (function(){
+    try {
+      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v1') || '{}');
+      var a = t.accent || '#f7a13c';
+      var P = {
+        navyAmber:    {bg:'#06101c',surface:'#0c1726',s2:'#131f30',ink:'#e8edf3',dim:'#8493a5',faint:'#4a5668'},
+        inkWhite:     {bg:'#0a0a0a',surface:'#141414',s2:'#1d1d1d',ink:'#f4f4f4',dim:'#888888',faint:'#444444'},
+        charcoalCyan: {bg:'#0e1418',surface:'#161e24',s2:'#1f2a32',ink:'#e8eef2',dim:'#7e8e98',faint:'#475058'},
+        hudGreen:     {bg:'#080c0a',surface:'#0e1410',s2:'#161e18',ink:'#e6f0e8',dim:'#7c8e80',faint:'#465048'},
+      };
+      var p = P[t.palette] || P.navyAmber;
+      var s = document.documentElement.style;
+      s.setProperty('--bg', p.bg); s.setProperty('--surface', p.surface);
+      s.setProperty('--surface-2', p.s2); s.setProperty('--ink', p.ink);
+      s.setProperty('--ink-dim', p.dim); s.setProperty('--ink-faint', p.faint);
+      s.setProperty('--accent', a);
+      var D = {compact:0.85, regular:1, comfy:1.15}; s.setProperty('--d', D[t.density]||1);
+    } catch(e){}
+  })();
+</script>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="glyph"></span>
+    <span class="meta">
+      <b>REUBEN&nbsp;LARSEN</b>
+      <i>N° AE-26 · SYDNEY · 33.8688°S</i>
+    </span>
+  </a>
+  <nav class="topnav">
+    <a href="index.html"><span class="num-tag">01</span>HOME</a>
+    <a href="index.html#work"><span class="num-tag">02</span>WORK</a>
+    <a href="blog.html"><span class="num-tag">03</span>LOG</a>
+    <a href="dashboard.html" class="active"><span class="num-tag">04</span>DASHBOARD</a>
+  </nav>
+</header>
+
+<!-- ── HERO ───────────────────────────────────────── -->
+<section class="dash-hero shell">
+  <div class="dash-hero-grid">
+    <div>
+      <div class="eyebrow-row">
+        <span class="live">MISSION 01 · OPEN</span>
+        <span>/</span>
+        <span class="amber">EPOCH FY26</span>
+        <span>/</span>
+        <span>HORIZON 2050</span>
+        <span>/</span>
+        <span>DRAFT v0.1</span>
+      </div>
+      <h1>
+        The <em>plan</em><br/>
+        <span class="dim">for space.</span>
+      </h1>
+    </div>
+
+    <div class="mc-panel">
+      <h4>
+        <span>MISSION CONTROL</span>
+        <span>T+ 00:00:00</span>
+      </h4>
+      <div class="mc-row">
+        <span class="k">Operator</span>
+        <span class="v">R. Larsen</span>
+        <span class="s">PRIME</span>
+      </div>
+      <div class="mc-row">
+        <span class="k">Vehicle</span>
+        <span class="v">Career, FY26 →</span>
+        <span class="s">NOM</span>
+      </div>
+      <div class="mc-row">
+        <span class="k">Trajectory</span>
+        <span class="v">Aerospace · industry</span>
+        <span class="s idle">PLAN</span>
+      </div>
+      <div class="mc-row">
+        <span class="k">Payload</span>
+        <span class="v">Bearings · RF · DSP</span>
+        <span class="s">LOAD</span>
+      </div>
+      <div class="mc-row">
+        <span class="k">Window</span>
+        <span class="v">2026 — 2050</span>
+        <span class="s idle">OPEN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HORIZONS ───────────────────────────────────── -->
+<section class="horizons shell">
+  <div class="sec-head">
+    <div class="num">PLAN / 01</div>
+    <h2>Horizons.</h2>
+    <div class="tail">FY26 → 2050</div>
+  </div>
+
+  <div class="horizon-rail">
+    <div class="horizon-cols">
+
+      <div class="horizon-col">
+        <div class="when"><span class="span">NOW</span> FY26 · TO Q4 26</div>
+        <h3>Finish the<br/><em>thesis.</em></h3>
+        <ul>
+          <li data-ix="01">Build the bearing rig &amp; sensor stack</li>
+          <li data-ix="02">Get DSP front-end resolving fault signatures</li>
+          <li data-ix="03">Hand BlueSAT v1 groundstation to next lead</li>
+          <li data-ix="04">Submit thesis · graduate · breathe</li>
+        </ul>
+      </div>
+
+      <div class="horizon-col">
+        <div class="when"><span class="span">NEXT</span> 2027 · 2028</div>
+        <h3>Industry,<br/><em>flight-side.</em></h3>
+        <ul>
+          <li data-ix="01">First role: GNC, propulsion, or testing</li>
+          <li data-ix="02">Get hands on real flight hardware</li>
+          <li data-ix="03">Keep writing &mdash; log everything</li>
+          <li data-ix="04">Ship one personal project that flies</li>
+        </ul>
+      </div>
+
+      <div class="horizon-col future">
+        <div class="when idle"><span class="span">MID</span> 2030 · 2035</div>
+        <h3>Build<br/><em>something.</em></h3>
+        <ul>
+          <li data-ix="01">Lead a real subsystem on a real vehicle</li>
+          <li data-ix="02">Decide: deep specialist or systems generalist</li>
+          <li data-ix="03">Found / co-found — or be employee #&lt;low&gt;</li>
+          <li data-ix="04">Move where the launches are</li>
+        </ul>
+      </div>
+
+      <div class="horizon-col future">
+        <div class="when idle"><span class="span">2050</span> NORTH STAR</div>
+        <h3>Be in the<br/><em>room.</em></h3>
+        <ul>
+          <li data-ix="01">On a program that puts people somewhere new</li>
+          <li data-ix="02">Make space-grade reliability boring &amp; cheap</li>
+          <li data-ix="03">Train the next operator in this seat</li>
+          <li data-ix="04">Have the receipts &mdash; this whole log</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PLACEHOLDER STRIP ──────────────────────────── -->
+<div class="awaiting">
+  <span class="icon"></span>
+  <span>
+    <b>Awaiting transmission &mdash;</b>
+    Reuben is wiring up the proper structure for this dashboard.
+    The cards below are a <span class="amber">draft framework</span>; the real plan
+    drops in here as it firms up.
+  </span>
+  <span class="amber">v0.1 · DRAFT</span>
+</div>
+
+<!-- ── BETS ───────────────────────────────────────── -->
+<section class="bets shell">
+  <div class="sec-head">
+    <div class="num">BETS / 02</div>
+    <h2>What I'm betting on.</h2>
+    <div class="tail">06 BETS · LIVE</div>
+  </div>
+
+  <div class="bet-grid">
+
+    <div class="bet" style="--p:62%">
+      <div class="ix">
+        <span>BET 01</span>
+        <span class="conf">CONF · <b>HIGH</b></span>
+      </div>
+      <h4>Reusability is just<br/><em>the start.</em></h4>
+      <p>
+        Cheap-to-orbit only matters if what we put up there is also cheap.
+        The next decade is about ground-side &amp; in-space economics catching up.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>62%</b></div>
+      <div class="meter"></div>
+    </div>
+
+    <div class="bet" style="--p:78%">
+      <div class="ix">
+        <span>BET 02</span>
+        <span class="conf">CONF · <b>HIGH</b></span>
+      </div>
+      <h4>Predictive maintenance<br/><em>flies too.</em></h4>
+      <p>
+        The bearings work isn't a side quest. Vibration-based health
+        monitoring on rotating machinery is the same problem on a turbopump,
+        a reaction wheel, and a CMG — just at different stakes.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>78%</b></div>
+      <div class="meter"></div>
+    </div>
+
+    <div class="bet" style="--p:48%">
+      <div class="ix">
+        <span>BET 03</span>
+        <span class="conf">CONF · <b>MED</b></span>
+      </div>
+      <h4>Groundstation is<br/><em>underrated.</em></h4>
+      <p>
+        Everyone wants the spacecraft. Almost nobody wants the antenna,
+        the SDR, the link budget, the ops console. That's where the
+        unglamorous wins live.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>48%</b></div>
+      <div class="meter"></div>
+    </div>
+
+    <div class="bet" style="--p:55%">
+      <div class="ix">
+        <span>BET 04</span>
+        <span class="conf">CONF · <b>MED</b></span>
+      </div>
+      <h4>Australia gets<br/><em>serious.</em></h4>
+      <p>
+        Not betting on a particular agency or company &mdash; betting on
+        the ecosystem. Local launch, local payloads, local ops. There's
+        a window here in the next 5 — 10 years.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>55%</b></div>
+      <div class="meter"></div>
+    </div>
+
+    <div class="bet" style="--p:40%">
+      <div class="ix">
+        <span>BET 05</span>
+        <span class="conf">CONF · <b>MED</b></span>
+      </div>
+      <h4>Smaller teams,<br/><em>harder problems.</em></h4>
+      <p>
+        Most of what I want to work on doesn't happen in a 10,000-person
+        prime. The leverage is in 20-to-200-person teams that ship hardware.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>40%</b></div>
+      <div class="meter"></div>
+    </div>
+
+    <div class="bet" style="--p:25%">
+      <div class="ix">
+        <span>BET 06</span>
+        <span class="conf">CONF · <b>LOW</b></span>
+      </div>
+      <h4><em>Awaiting</em><br/>transmission.</h4>
+      <p style="color:var(--ink-faint)">
+        Reserved. Drop your sixth bet in here — a wild one, a contrarian
+        one, the thing you'll feel stupid for saying out loud until you're
+        right.
+      </p>
+      <div class="meter-row"><span>Conviction</span><b>—</b></div>
+      <div class="meter"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── VISION ─────────────────────────────────────── -->
+<section class="vision shell">
+  <div>
+    <div class="eyebrow" style="margin-bottom:24px"><span class="amber">/ 03</span>&nbsp;&nbsp;NORTH STAR</div>
+    <p class="blockquote">
+      The interesting part of space isn't getting there. It's <em>staying</em>,
+      <em>building</em>, and making the boring parts cheap enough that everyone else can.
+    </p>
+  </div>
+  <div>
+    <div class="body">
+      <p>
+        <b>This page is a placeholder for the real thing.</b> I have a separate
+        document with how all the pieces fit together &mdash; thesis to
+        BlueSAT to industry to whatever comes after &mdash; and that's what
+        slots in here next.
+      </p>
+      <p>
+        The format is roadmap-shaped: a small number of bets, a clear
+        ordering of what comes when, and the receipts (the log, the work
+        index) sitting one click away. The point isn't to be right about
+        2050 &mdash; it's to be honest about what I'm aiming at, and to
+        update it in public as I learn.
+      </p>
+      <p>
+        If you read this and want to push back, send me an email. The
+        mission gets better with operators in the loop.
+      </p>
+    </div>
+    <div class="signoff">
+      <b>— R. LARSEN</b> · LAST UPDATE Q2 26 · NEXT REVIEW Q4 26
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="col">
+    <b>REUBEN LARSEN</b>
+    <span>AEROSPACE · UNSW</span>
+    <span>FY26</span>
+  </div>
+  <div class="col">
+    <b>ELSEWHERE</b>
+    <a href="https://github.com/Reub2003">GITHUB ↗</a>
+    <a href="mailto:hello@example.com">EMAIL ↗</a>
+    <a href="blog.html">RSS ↗</a>
+  </div>
+  <div class="col">
+    <b>INDEX</b>
+    <a href="index.html">HOME</a>
+    <a href="blog.html">LOG</a>
+    <a href="dashboard.html">DASHBOARD</a>
+  </div>
+  <div class="col" style="text-align:right">
+    <span class="num">MMXXVI · v1.0.0</span>
+    <span>BUILT IN SYDNEY</span>
+  </div>
+</footer>
+
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel">
+  ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+
+</body>
+</html>
