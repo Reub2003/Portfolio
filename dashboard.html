@@ -660,10 +660,33 @@
   </div>
 </section>
 
+<!-- ── CONVERGENCE MAP ────────────────────────────── -->
+<section class="shell" style="padding: var(--pad-y) 0; border-top: 1px solid var(--rule);">
+  <div style="padding: 0 var(--pad-x) 32px;">
+    <div class="sec-head">
+      <div class="num">MAP / 03</div>
+      <h2>How we get there.</h2>
+      <div class="tail">12 NODES · 17 CAUSAL LINKS</div>
+    </div>
+    <p style="max-width:620px; color:var(--ink-dim); font-size:14px; line-height:1.6; margin:0 0 8px;">
+      This is the dependency graph for the version of the future I think is actually achievable —
+      what needs to go right, in what order, and why each unlock feeds the next.
+      Click any node to explore the causal chain. Nothing in here is inevitable;
+      all of it is tractable.
+    </p>
+    <div style="display:flex; gap:20px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; color:var(--ink-faint); flex-wrap:wrap; margin-top:12px;">
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#f97316;display:inline-block;box-shadow:0 0 6px #f97316;"></span>PHASE 1 · IGNITION <span style="color:var(--ink-faint);margin-left:2px;">(Yrs 1–5)</span></span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#06b6d4;display:inline-block;box-shadow:0 0 6px #06b6d4;"></span>PHASE 2 · ACCELERATION <span style="color:var(--ink-faint);margin-left:2px;">(Yrs 5–15)</span></span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#a78bfa;display:inline-block;box-shadow:0 0 6px #a78bfa;"></span>PHASE 3 · EXPANSION <span style="color:var(--ink-faint);margin-left:2px;">(Yrs 15+)</span></span>
+    </div>
+  </div>
+  <div id="convergence-root"></div>
+</section>
+
 <!-- ── VISION ─────────────────────────────────────── -->
 <section class="vision shell">
   <div>
-    <div class="eyebrow" style="margin-bottom:24px"><span class="amber">/ 03</span>&nbsp;&nbsp;NORTH STAR</div>
+    <div class="eyebrow" style="margin-bottom:24px"><span class="amber">/ 04</span>&nbsp;&nbsp;NORTH STAR</div>
     <p class="blockquote">
       The interesting part of space isn't getting there. It's <em>staying</em>,
       <em>building</em>, and making the boring parts cheap enough that everyone else can.
@@ -726,8 +749,10 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="app.jsx"></script>
+<script type="text/babel" src="convergence-map.jsx"></script>
 <script type="text/babel">
   ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+  ReactDOM.createRoot(document.getElementById('convergence-root')).render(<ConvergenceMap />);
 </script>
 <script src="shared.js"></script>
 
