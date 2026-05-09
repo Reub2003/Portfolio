@@ -207,13 +207,13 @@ img { max-width: 100%; display: block; }
 }
 .work-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   background: var(--bg);
   border: 1px solid var(--rule);
   min-width: 290px;
-  padding: 4px 0;
+  padding: 10px 0 4px;
   display: none;
   z-index: 200;
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
