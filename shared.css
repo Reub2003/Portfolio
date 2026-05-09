@@ -199,6 +199,44 @@ img { max-width: 100%; display: block; }
   margin-right: 4px;
 }
 
+/* ── Work nav dropdown ───────────────────────────────── */
+.work-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.work-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  min-width: 290px;
+  padding: 4px 0;
+  display: none;
+  z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.work-nav:hover .work-dropdown { display: block; }
+.work-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.15s, color 0.15s;
+}
+.work-dropdown a:last-child { border-bottom: none; }
+.work-dropdown a::before { display: none; }
+.work-dropdown a:hover { background: rgba(255,255,255,0.04); color: var(--ink); }
+.work-dd-num { color: var(--accent); min-width: 52px; font-family: var(--font-mono); }
+.work-dd-active { color: var(--accent); margin-left: 4px; }
+
 /* ── Footer ──────────────────────────────────────────── */
 
 footer.foot {
