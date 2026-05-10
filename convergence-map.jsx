@@ -1,257 +1,249 @@
-// Convergence Map — loaded via Babel CDN, no ES imports
-const { useState, useEffect, useRef } = React;
+// Convergence Map v2 — CDN Babel, no ES imports
+const { useState, useEffect } = React;
+
+const CM_PHASES = [
+  { phase:1, label:"FOUNDATION",   sublabel:"Now → 5 yrs",  color:"#38bdf8" },
+  { phase:2, label:"CONVERGENCE",  sublabel:"5–10 yrs",     color:"#a78bfa" },
+  { phase:3, label:"EMERGENCE",    sublabel:"10–15 yrs",    color:"#f97316" },
+  { phase:4, label:"EXPANSION",    sublabel:"15–25 yrs",    color:"#4ade80" },
+  { phase:5, label:"CIVILISATION", sublabel:"25+ yrs",      color:"#fbbf24" },
+];
 
 const CM_NODES = [
-  {
-    id: "fusion", label: "Net Positive\nFusion", x: 50, y: 12,
-    color: "#f97316", icon: "⚛", summary: "Achieved in ~5 years",
-    detail: "D-T fusion on the ground cracks net energy output. Not immediately revolutionary — grid infrastructure takes time — but energy prices begin falling in anticipation. The key unlock is cheap, abundant electricity at civilisational scale.",
-    outputs: ["compute", "hydrogen", "manufacturing"], phase: 1
-  },
-  {
-    id: "compute", label: "Compute\nAbundance", x: 78, y: 28,
-    color: "#06b6d4", icon: "⬡", summary: "Energy → cheap processing",
-    detail: "Data centres currently constrained by electricity cost. Fusion removes that ceiling. Training runs that cost $100M become $1M. Inference becomes essentially free. This is the fastest feedback loop in the entire system.",
-    outputs: ["agi", "robotics"], phase: 1
-  },
-  {
-    id: "hydrogen", label: "Cheap\nHydrogen", x: 22, y: 28,
-    color: "#a3e635", icon: "H₂", summary: "Electrolysis scales massively",
-    detail: "Fusion electricity makes green hydrogen economically trivial via electrolysis. Hydrogen is a key rocket propellant — Starship's Raptor engines can run on it. Launch costs see indirect but real reductions.",
-    outputs: ["launch"], phase: 1
-  },
-  {
-    id: "manufacturing", label: "Cheap\nManufacturing", x: 50, y: 30,
-    color: "#a78bfa", icon: "⚙", summary: "Energy-intensive production scales",
-    detail: "Steel, aluminium, carbon fibre — all energy intensive. Fusion makes advanced materials cheaper, which feeds directly into rocket and spacecraft manufacturing. Combined with robotic assembly lines, unit costs crater.",
-    outputs: ["launch", "robotics"], phase: 1
-  },
-  {
-    id: "agi", label: "AGI\n(Assumed)", x: 78, y: 52,
-    color: "#f43f5e", icon: "◈", summary: "10–15 years post-fusion",
-    detail: "Compute abundance + sustained AI research = AGI becoming a working assumption. Cloud-based cognition means physical systems don't need local intelligence. The 'brain' lives in a fusion-powered datacentre. Alignment and safety become existential priorities at this point.",
-    outputs: ["robotics", "plasma_physics"], phase: 2
-  },
-  {
-    id: "robotics", label: "Humanoid\nRobotics", x: 50, y: 52,
-    color: "#06b6d4", icon: "⬟", summary: "Dexterous + cloud-brained",
-    detail: "Humanoid robots become genuinely useful not because they're locally smart, but because AGI cognition is streamed to them over the cloud. They just need to be reliable and dexterous. Labour economics bend — then break. Robots can build and maintain fusion plants, accelerating the whole loop.",
-    outputs: ["manufacturing", "fusion_drive_build"], phase: 2
-  },
-  {
-    id: "plasma_physics", label: "AI-Accelerated\nPlasma Physics", x: 78, y: 72,
-    color: "#f97316", icon: "∿", summary: "The second mountain",
-    detail: "D-T fusion ≠ fusion drives. Fusion propulsion requires aneutronic fuels (D-He3, p-B11) that produce charged particles instead of neutrons, enabling magnetic thrust. AGI-assisted plasma physics research is the path to cracking this — potentially compressing decades of research into years.",
-    outputs: ["fusion_drive"], phase: 2
-  },
-  {
-    id: "launch", label: "Starship\n→ LEO", x: 22, y: 52,
-    color: "#a3e635", icon: "🚀", summary: "The gravity well solved",
-    detail: "Starship solves the problem fusion can't touch: getting off the ground. Chemical rockets need high thrust-to-weight to fight gravity — fusion drives produce 5–20N, useless at launch. But Starship to LEO at $100/kg changes everything. You only need to solve gravity once per mission.",
-    outputs: ["architecture"], phase: 2
-  },
-  {
-    id: "fusion_drive", label: "Fusion\nDrive", x: 78, y: 88,
-    color: "#f43f5e", icon: "⚡", summary: "10,000+ seconds Isp",
-    detail: "Direct Fusion Drive: field-reversed configuration, 5–20N thrust, 10,000+ seconds Isp. Compare to Starship's ~380s. In microgravity with no drag, low thrust + continuous burn = enormous delta-v. Burns for weeks instead of minutes. Mars transit drops from 9 months to ~90 days conservatively.",
-    outputs: ["architecture"], phase: 3
-  },
-  {
-    id: "fusion_drive_build", label: "Robotic\nAssembly", x: 50, y: 72,
-    color: "#a78bfa", icon: "🔧", summary: "Robots build the drive in orbit",
-    detail: "Fusion transfer vehicles are too large to launch assembled. Robotic construction in LEO — enabled by AGI cognition and cheap Starship cargo runs — makes orbital shipyards viable. No human has to do a spacewalk to bolt a fusion drive together.",
-    outputs: ["architecture"], phase: 3
-  },
-  {
-    id: "architecture", label: "Starship + Fusion\nArchitecture", x: 36, y: 72,
-    color: "#06b6d4", icon: "◎", summary: "The two-stage solar system",
-    detail: "Starship lifts to LEO. Orbital depot awaits. Fusion transfer vehicle — permanently space-based, never touching atmosphere — takes cargo and crew anywhere in the solar system. The fusion stage is reused indefinitely. This is the architecture NASA and DARPA have been quietly converging on.",
-    outputs: ["solar_system"], phase: 3
-  },
-  {
-    id: "solar_system", label: "Solar System\nAccessible", x: 50, y: 90,
-    color: "#f97316", icon: "◉", summary: "The civilisational outcome",
-    detail: "Mars in weeks. Jupiter crewed missions conceivable. Saturn reachable and returnable. The outer solar system stops being a generational voyage and becomes a commutable distance. In-space manufacturing, asteroid mining, and permanent off-world presence become engineering questions rather than physics impossibilities.",
-    outputs: [], phase: 3
-  }
+  // Phase 1 — y:9
+  { id:"starship",  label:"Starship\nMatures",     icon:"🚀", x:18, y:9,   phase:1, color:"#38bdf8",
+    summary:"Ground → LEO becomes routine",
+    detail:"Starship reaches operational maturity within 5 years — fully reusable, high cadence, sub-$100/kg to LEO realistic. This is the single most important near-term unlock. Its role in the mature architecture is permanent and narrow: atmosphere to LEO only. It never goes further. Everything beyond LEO is handled by vehicles that never touch the ground." },
+  { id:"robotics",  label:"Advanced\nRobotics",    icon:"⬟", x:50, y:9,   phase:1, color:"#38bdf8",
+    summary:"Labour automation begins in earnest",
+    detail:"Humanoid and specialised robots reach genuine usefulness — reliable enough for repetitive physical labour with remote supervision. Factories, logistics, construction begin to see displacement. The key enabler isn't local intelligence: robots stream cognition from cloud inference in real time. Better hardware + better AI = step change. Labour economics start bending." },
+  { id:"ai_models", label:"AI Model\nProgress",    icon:"◈", x:82, y:9,   phase:1, color:"#38bdf8",
+    summary:"Rapid capability gains continue",
+    detail:"AI capabilities compound — reasoning, planning, autonomous agents. Not AGI yet, but increasingly capable of complex engineering, scientific research assistance, and operating robotic systems remotely. This phase is already underway. The path to AGI runs through cheap compute, which runs through energy abundance, which runs through fusion." },
+
+  // Phase 2 — y:34
+  { id:"leo_infra",   label:"LEO\nInfrastructure",  icon:"◎", x:18, y:34, phase:2, color:"#a78bfa",
+    summary:"Orbit becomes industrial real estate",
+    detail:"Cheap Starship launches make LEO viable for propellant depots, orbital assembly platforms, early data centres, and staging infrastructure. LEO transitions from a destination to a port — the edge of the gravity well. This is the foundation on which all in-space transport is built: without a place to assemble and refuel, there are no permanent space vehicles." },
+  { id:"ai_robotics", label:"AI + Robotics\nSynergy", icon:"⚙", x:50, y:34, phase:2, color:"#a78bfa",
+    summary:"Cloud brain meets capable body",
+    detail:"Converging AI models with capable robot hardware creates a step change. Robots stream cognition from data centres — no onboard intelligence needed. AI gets embodied feedback: real-world physical data makes models smarter, which makes robots more capable. Labour automation accelerates. Critically this enables orbital assembly: robots placed in space, operated from the ground with near-AGI reasoning." },
+  { id:"fusion",      label:"Net Positive\nFusion",   icon:"⚛", x:82, y:34, phase:2, color:"#a78bfa",
+    summary:"~10 years, optimistic case",
+    detail:"D-T fusion achieves net energy output at commercially meaningful scale. Not immediately grid-dominant — infrastructure takes years — but the energy price trajectory shifts immediately on the announcement alone. AI-assisted plasma physics simulation is a key accelerant. Robots help too: fusion plants require precision construction and maintenance that robotic systems handle well." },
+
+  // Phase 3 — y:60
+  { id:"energy",           label:"Energy\nAbundance",  icon:"∿", x:18, y:60, phase:3, color:"#f97316",
+    summary:"Electricity as near-free resource",
+    detail:"Fusion at grid scale means electricity costs approach near-zero. Green hydrogen becomes trivially cheap. Compute runs without energy constraints. Energy-intensive manufacturing — carbon fibre, aluminium, advanced alloys — becomes affordable. Ion drives need substantial power; energy abundance is what makes Gen1 transport ships genuinely practical at scale." },
+  { id:"agi",              label:"AGI\nAssumed",        icon:"◈", x:50, y:60, phase:3, color:"#f97316",
+    summary:"Compute abundance tips the scale",
+    detail:"Energy abundance removes the compute ceiling. Training runs that cost $100M become $1M. Inference is near-free. Combined with continued architectural progress, AGI becomes a working assumption — open-ended scientific research, autonomous engineering, generalised problem-solving. AGI-assisted plasma physics directly accelerates fusion drive development, compressing decades of aneutronic fuel research into years." },
+  { id:"orbital_assembly", label:"Orbital\nAssembly",   icon:"🔧", x:82, y:60, phase:3, color:"#f97316",
+    summary:"Robots build ships in orbit",
+    detail:"AI-operated robots plus cheap Starship cargo runs enables orbital shipyards. Structures too large to launch assembled — transport hulls, hab modules, power arrays — are built in LEO by robotic crews supervised from the ground. No human EVA required for routine construction. This is the hard prerequisite for any permanent in-space vehicle: you cannot launch a solar-system-scale ship from Earth's surface." },
+
+  // Phase 4 — y:84
+  { id:"gen1_transport", label:"Gen 1 Transport\n(Ion Drive)",   icon:"◉", x:25, y:84, phase:4, color:"#4ade80",
+    summary:"Orbit-permanent, inner solar system viable",
+    detail:"The first generation of permanent in-space transport ships. Ion drives are well-understood, existing technology — the unlock here is assembling them at scale in orbit and powering them from abundant energy. Specific impulse ~3,000–5,000 seconds: far better than chemical, but low thrust means long burn times. Mars transit: 4–6 months. Asteroid belt reachable. These ships never enter an atmosphere — purpose-built for vacuum. They prove the two-tier architecture works." },
+  { id:"fusion_drive",   label:"Fusion Drive\nDeveloped",         icon:"⚡", x:75, y:84, phase:4, color:"#4ade80",
+    summary:"Aneutronic propulsion cracked",
+    detail:"The second mountain after ground fusion. D-T fusion can't propel ships well — ~80% of energy exits as neutrons, which can't be magnetically directed as exhaust. Aneutronic fuels like D-He3 produce charged particles directable as thrust: 10,000–20,000+ seconds Isp, versus ion drives at ~3,000s and chemical at ~380s. AGI-accelerated plasma physics is what makes this timeline plausible. Direct Fusion Drive also outputs electricity simultaneously." },
+
+  // Phase 5 — y:104
+  { id:"gen2_transport", label:"Gen 2 Transport\n(Fusion Drive)", icon:"◉", x:50, y:104, phase:5, color:"#fbbf24",
+    summary:"Full solar system, weeks not months",
+    detail:"Gen2 ships replace ion drives with fusion propulsion — the same hull architecture, upgraded powerplant. The Isp jump from ~3,000s to 10,000–20,000s is transformative: Mars in weeks instead of months. Outer planets move from 'technically possible' to 'operationally routine'. Crewed Jupiter missions become conceivable. Saturn reachable and returnable within a career. Gen2 ships continuously accelerate — no long coasting arcs." },
+
+  // Terminal — y:121
+  { id:"solar_system",   label:"Solar System\nAccessible",        icon:"🌌", x:50, y:121, phase:5, color:"#fb923c",
+    summary:"Civilisational expansion",
+    detail:"The terminal convergence. Gen1 opens the inner solar system — Mars colonisation, asteroid belt resource extraction, permanent Lagrange point infrastructure. Gen2 opens everything: the outer planets, their moons, the Kuiper belt. Physical scarcity of resources collapses — the solar system contains more of every element than humanity could consume in millennia. The map of human civilisation expands by orders of magnitude." },
 ];
 
 const CM_CONNECTIONS = [
-  { from: "fusion", to: "compute" },
-  { from: "fusion", to: "hydrogen" },
-  { from: "fusion", to: "manufacturing" },
-  { from: "compute", to: "agi" },
-  { from: "compute", to: "robotics" },
-  { from: "agi", to: "robotics" },
-  { from: "agi", to: "plasma_physics" },
-  { from: "robotics", to: "manufacturing" },
-  { from: "robotics", to: "fusion_drive_build" },
-  { from: "manufacturing", to: "launch" },
-  { from: "hydrogen", to: "launch" },
-  { from: "plasma_physics", to: "fusion_drive" },
-  { from: "launch", to: "architecture" },
-  { from: "fusion_drive", to: "architecture" },
-  { from: "fusion_drive_build", to: "architecture" },
-  { from: "architecture", to: "solar_system" },
-  { from: "robotics", to: "architecture" },
+  { from:"starship",         to:"leo_infra" },
+  { from:"robotics",         to:"ai_robotics" },
+  { from:"ai_models",        to:"ai_robotics" },
+  { from:"ai_models",        to:"fusion" },
+  { from:"robotics",         to:"fusion" },
+  { from:"leo_infra",        to:"orbital_assembly" },
+  { from:"ai_robotics",      to:"orbital_assembly" },
+  { from:"ai_robotics",      to:"agi" },
+  { from:"fusion",           to:"energy" },
+  { from:"energy",           to:"agi" },
+  { from:"energy",           to:"gen1_transport" },
+  { from:"agi",              to:"gen1_transport" },
+  { from:"agi",              to:"fusion_drive" },
+  { from:"orbital_assembly", to:"gen1_transport" },
+  { from:"fusion",           to:"fusion_drive" },
+  { from:"energy",           to:"fusion_drive" },
+  { from:"gen1_transport",   to:"gen2_transport" },
+  { from:"fusion_drive",     to:"gen2_transport" },
+  { from:"starship",         to:"gen1_transport" },
+  { from:"starship",         to:"gen2_transport" },
+  { from:"gen1_transport",   to:"solar_system" },
+  { from:"gen2_transport",   to:"solar_system" },
 ];
 
-const CM_PHASES = [
-  { phase: 1, label: "IGNITION", sub: "Years 1–5", color: "#f97316" },
-  { phase: 2, label: "ACCELERATION", sub: "Years 5–15", color: "#06b6d4" },
-  { phase: 3, label: "EXPANSION", sub: "Years 15+", color: "#a78bfa" },
-];
-
-// Deterministic curve offsets — no Math.random() in render
-const CM_CURVE_OFFSETS = CM_CONNECTIONS.map((_, i) =>
-  ((i % 2 === 0 ? 1 : -1) * (3 + (i * 4.3) % 8)).toFixed(1)
-);
+// Deterministic horizontal curve offsets per connection
+const CM_OFFSETS = {
+  "starship-leo_infra":           0,
+  "robotics-ai_robotics":         0,
+  "ai_models-ai_robotics":        0,
+  "ai_models-fusion":             8,
+  "robotics-fusion":              8,
+  "leo_infra-orbital_assembly":  -7,
+  "ai_robotics-orbital_assembly": 7,
+  "ai_robotics-agi":              0,
+  "fusion-energy":               -8,
+  "energy-agi":                   0,
+  "energy-gen1_transport":       -6,
+  "agi-gen1_transport":           0,
+  "agi-fusion_drive":             0,
+  "orbital_assembly-gen1_transport": 7,
+  "fusion-fusion_drive":          0,
+  "energy-fusion_drive":          8,
+  "gen1_transport-gen2_transport":-6,
+  "fusion_drive-gen2_transport":  6,
+  "starship-gen1_transport":     -14,
+  "starship-gen2_transport":     -18,
+  "gen1_transport-solar_system": -8,
+  "gen2_transport-solar_system":  0,
+};
 
 function ConvergenceMap() {
   const [selected, setSelected] = useState(null);
-  const [hovered, setHovered] = useState(null);
-  const [animated, setAnimated] = useState(false);
+  const [hovered,  setHovered]  = useState(null);
+  const [visible,  setVisible]  = useState(false);
 
-  useEffect(() => { setTimeout(() => setAnimated(true), 80); }, []);
+  useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
 
-  const getNode = (id) => CM_NODES.find(n => n.id === id);
-  const selectedNode = selected ? getNode(selected) : null;
+  const focus = selected || hovered;
+  const getNode = id => CM_NODES.find(n => n.id === id);
+  const sel = selected ? getNode(selected) : null;
+  const phaseInfo = p => CM_PHASES.find(ph => ph.phase === p);
 
-  const isHighlighted = (nodeId) => {
-    if (!selected && !hovered) return true;
-    const focus = selected || hovered;
-    if (nodeId === focus) return true;
+  const nodelit = id => {
+    if (!focus) return true;
+    if (id === focus) return true;
     return CM_CONNECTIONS.some(c =>
-      (c.from === focus && c.to === nodeId) || (c.to === focus && c.from === nodeId)
+      (c.from === focus && c.to === id) || (c.to === focus && c.from === id)
     );
   };
-
-  const isConnHighlighted = (conn) => {
-    if (!selected && !hovered) return true;
-    const focus = selected || hovered;
-    return conn.from === focus || conn.to === focus;
-  };
-
-  const phaseColor = (phase) => CM_PHASES.find(p => p.phase === phase)?.color;
+  const connlit = c => !!focus && (c.from === focus || c.to === focus);
 
   return (
-    <div style={{ display: "flex", gap: 0, position: "relative", background: "#050a10", minHeight: 540 }}>
+    <div style={{ display:"flex", position:"relative", background:"#04080f", minHeight:580 }}>
       <style>{`
-        @keyframes cm-pulse { 0%{r:18;opacity:.8} 100%{r:32;opacity:0} }
-        @keyframes cm-flow { 0%{stroke-dashoffset:100} 100%{stroke-dashoffset:0} }
-        @keyframes cm-fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        .cm-pulse { animation: cm-pulse 2s ease-out infinite; }
-        .cm-flow { animation: cm-flow 3s linear infinite; }
-        .cm-fade-up { animation: cm-fade-up 0.35s ease forwards; }
-        .cm-node { cursor: pointer; transition: opacity 0.3s ease; }
-        .cm-node circle { transition: filter 0.2s; }
-        .cm-tag {
-          background: rgba(6,182,212,0.1);
-          border: 1px solid rgba(6,182,212,0.3);
-          border-radius: 3px; padding: 3px 8px;
-          font-size: 10px; cursor: pointer;
-          transition: background 0.2s;
-          font-family: 'JetBrains Mono', monospace;
-          letter-spacing: 0.06em;
-        }
-        .cm-tag:hover { background: rgba(6,182,212,0.2); }
-        .cm-close {
-          background: transparent; border: 1px solid #1e293b;
-          color: #475569; border-radius: 3px; padding: 8px;
-          cursor: pointer; font-size: 10px; letter-spacing: 0.1em;
-          font-family: 'JetBrains Mono', monospace; width: 100%;
-          transition: border-color 0.2s, color 0.2s;
-        }
-        .cm-close:hover { border-color: #475569; color: #94a3b8; }
-        .cm-grid-bg {
-          position: absolute; inset: 0; pointer-events: none;
-          background-image:
-            linear-gradient(rgba(6,182,212,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6,182,212,0.04) 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
+        @keyframes cm2-dashflow { to { stroke-dashoffset:-20; } }
+        @keyframes cm2-ripple { 0%,100%{opacity:.45} 50%{opacity:0} }
+        @keyframes cm2-fadeup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+        .cm2-node { cursor:pointer; transition:opacity .25s ease; }
+        .cm2-panel-in { animation: cm2-fadeup .35s cubic-bezier(.4,0,.2,1) forwards; }
+        .cm2-chip { border-radius:3px; padding:3px 8px; font-size:10px; cursor:pointer;
+          transition:opacity .15s; display:inline-flex; align-items:center; gap:4px; }
+        .cm2-chip:hover { opacity:.7; }
+        .cm2-grid { position:absolute; inset:0; pointer-events:none;
+          background-image: linear-gradient(rgba(56,189,248,.025) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(56,189,248,.025) 1px,transparent 1px);
+          background-size:48px 48px; }
       `}</style>
 
-      <div className="cm-grid-bg" />
+      <div className="cm2-grid" />
 
       {/* SVG graph */}
-      <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
-        <svg
-          viewBox="0 0 100 105"
-          style={{ width: "100%", maxHeight: 620, display: "block" }}
-          preserveAspectRatio="xMidYMid meet"
-        >
+      <div style={{ flex:1, position:"relative", zIndex:1 }}>
+        <svg viewBox="0 0 100 130" style={{ width:"100%", maxHeight:680, display:"block" }}
+          preserveAspectRatio="xMidYMid meet">
           <defs>
-            <marker id="cm-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L6,3 z" fill="#06b6d430" />
+            <marker id="cm2-a0" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
+              <path d="M0,0L0,5L5,2.5z" fill="#94a3b815"/>
             </marker>
-            <marker id="cm-arrow-hi" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L6,3 z" fill="#06b6d4" />
+            <marker id="cm2-a1" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
+              <path d="M0,0L0,5L5,2.5z" fill="#94a3b8cc"/>
             </marker>
             {CM_NODES.map(n => (
-              <radialGradient key={n.id} id={`cm-glow-${n.id}`} cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor={n.color} stopOpacity="0.3" />
-                <stop offset="100%" stopColor={n.color} stopOpacity="0" />
+              <radialGradient key={n.id} id={`cm2-rg-${n.id}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={n.color} stopOpacity=".22"/>
+                <stop offset="100%" stopColor={n.color} stopOpacity="0"/>
               </radialGradient>
             ))}
           </defs>
 
+          {/* Phase row labels */}
+          <text x="50" y="77" textAnchor="middle" fontSize="1.6" fill="#334155"
+            fontFamily="monospace" letterSpacing=".12em">── PHASE 4 · EXPANSION ──</text>
+          <text x="50" y="97" textAnchor="middle" fontSize="1.6" fill="#475569"
+            fontFamily="monospace" letterSpacing=".12em">── PHASE 5 · CIVILISATION ──</text>
+
           {/* Connections */}
-          {CM_CONNECTIONS.map((conn, i) => {
-            const from = getNode(conn.from);
-            const to = getNode(conn.to);
-            const hi = isConnHighlighted(conn);
-            const mx = (from.x + to.x) / 2 + parseFloat(CM_CURVE_OFFSETS[i]);
-            const my = (from.y + to.y) / 2;
+          {CM_CONNECTIONS.map((c, i) => {
+            const f = getNode(c.from), t = getNode(c.to);
+            const lit = connlit(c);
+            const off = CM_OFFSETS[`${c.from}-${c.to}`] || 0;
+            const mx = (f.x + t.x) / 2 + off;
+            const my = (f.y + t.y) / 2;
             return (
               <path key={i}
-                d={`M${from.x},${from.y} Q${mx},${my} ${to.x},${to.y}`}
+                d={`M${f.x},${f.y} Q${mx},${my} ${t.x},${t.y}`}
                 fill="none"
-                stroke={hi ? "#06b6d4" : "#06b6d415"}
-                strokeWidth={hi ? 0.4 : 0.2}
-                strokeDasharray={hi ? "2 1" : "none"}
-                markerEnd={hi ? "url(#cm-arrow-hi)" : "url(#cm-arrow)"}
-                className={hi ? "cm-flow" : ""}
-                style={{ opacity: animated ? 1 : 0, transition: "opacity 0.4s, stroke 0.3s" }}
+                stroke={lit ? "#94a3b8" : "#94a3b80e"}
+                strokeWidth={lit ? .42 : .18}
+                strokeDasharray={lit ? "2.5 1.2" : "none"}
+                markerEnd={lit ? "url(#cm2-a1)" : "url(#cm2-a0)"}
+                style={lit ? { animation:"cm2-dashflow 2s linear infinite" } : {}}
+                opacity={visible ? 1 : 0}
               />
             );
           })}
 
           {/* Nodes */}
-          {CM_NODES.map((node, i) => {
-            const hi = isHighlighted(node.id);
-            const isSel = selected === node.id;
-            const pc = phaseColor(node.phase);
+          {CM_NODES.map((n, i) => {
+            const lit = nodelit(n.id);
+            const isSel = selected === n.id;
+            const isGen = n.id === "gen1_transport" || n.id === "gen2_transport";
+            const ph = phaseInfo(n.phase);
+            const r = isGen ? 7.2 : 6;
+            const ring = isGen ? 9 : 7.8;
+            const glow = isGen ? 13 : 11;
             return (
-              <g key={node.id}
-                className="cm-node"
-                transform={`translate(${node.x},${node.y})`}
-                onClick={() => setSelected(selected === node.id ? null : node.id)}
-                onMouseEnter={() => setHovered(node.id)}
+              <g key={n.id} className="cm2-node"
+                transform={`translate(${n.x},${n.y})`}
+                style={{ opacity: visible ? (lit ? 1 : .15) : 0, transition:`opacity .3s ease ${i*.04}s` }}
+                onClick={() => setSelected(selected === n.id ? null : n.id)}
+                onMouseEnter={() => setHovered(n.id)}
                 onMouseLeave={() => setHovered(null)}
-                style={{ opacity: animated ? (hi ? 1 : 0.2) : 0, transition: `opacity 0.3s ease ${i * 0.04}s` }}
               >
-                <circle r="10" fill={`url(#cm-glow-${node.id})`} />
-                {isSel && <circle r="18" fill="none" stroke={node.color} strokeWidth="0.3" opacity="0" className="cm-pulse" />}
-                <circle r="7.5" fill="none" stroke={pc} strokeWidth={isSel ? 0.8 : 0.4}
-                  strokeDasharray={isSel ? "none" : "3 1"} opacity={0.6} />
-                <circle r="6"
-                  fill={isSel ? node.color + "30" : "#0a1520"}
-                  stroke={node.color}
-                  strokeWidth={isSel ? 0.8 : 0.5}
-                  style={{ filter: isSel ? `drop-shadow(0 0 4px ${node.color})` : "none" }}
-                />
-                <text textAnchor="middle" dominantBaseline="central" fontSize="4" fill={node.color} y="0.2">
-                  {node.icon}
+                <circle r={glow} fill={`url(#cm2-rg-${n.id})`}/>
+                {isSel && (
+                  <circle r={glow + 10} fill="none" stroke={n.color} strokeWidth={.28}
+                    style={{ animation:"cm2-ripple 2.2s ease-out infinite" }}/>
+                )}
+                <circle r={ring} fill="none" stroke={ph.color}
+                  strokeWidth={isSel ? .85 : .38}
+                  strokeDasharray={isSel ? "none" : "2.5 1.5"}
+                  opacity={.5}/>
+                <circle r={r}
+                  fill={isSel ? n.color+"22" : "#060c17"}
+                  stroke={n.color}
+                  strokeWidth={isSel ? .85 : .52}
+                  style={{ filter: isSel ? `drop-shadow(0 0 6px ${n.color}88)` : "none", transition:"all .25s" }}/>
+                <text textAnchor="middle" dominantBaseline="central"
+                  fontSize={n.icon.length > 2 ? "3.2" : "4.2"} y={.2} fill={n.color}>
+                  {n.icon}
                 </text>
-                {node.label.split('\n').map((line, li) => (
-                  <text key={li} textAnchor="middle" y={10 + li * 2.8} fontSize="1.8"
-                    fill={hi ? "#cbd5e1" : "#475569"}
-                    style={{ userSelect: "none", fontFamily: "monospace" }}>
-                    {line}
+                {n.label.split("\n").map((l, li) => (
+                  <text key={li} textAnchor="middle"
+                    y={(ring + 2.5) + li * 2.75}
+                    fontSize={1.75} fill={lit ? "#cbd5e1" : "#334155"}
+                    fontFamily="monospace" style={{ userSelect:"none" }}>
+                    {l}
                   </text>
                 ))}
-                <circle cx="5.5" cy="-5.5" r="1.2" fill={pc} stroke="#050a10" strokeWidth="0.4" />
+                <circle cx={ring - 1.5} cy={-(ring - 1.5)}
+                  r={1.25} fill={ph.color} stroke="#04080f" strokeWidth={.45}/>
               </g>
             );
           })}
@@ -259,105 +251,123 @@ function ConvergenceMap() {
       </div>
 
       {/* Detail panel */}
-      <div style={{
-        width: selectedNode ? 300 : 0,
-        overflow: "hidden",
-        transition: "width 0.4s cubic-bezier(0.4,0,0.2,1)",
-        flexShrink: 0,
-        position: "relative",
-        zIndex: 2,
-      }}>
-        {selectedNode && (
-          <div className="cm-fade-up" style={{
-            width: 300,
-            background: "linear-gradient(180deg,#0a141e,#060d14)",
-            borderLeft: `1px solid ${selectedNode.color}40`,
-            padding: "20px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 14,
-            minHeight: "100%",
-            fontFamily: "'JetBrains Mono', monospace",
+      <div style={{ width: sel ? 308 : 0, flexShrink:0, overflow:"hidden",
+        transition:"width .4s cubic-bezier(.4,0,.2,1)", position:"relative", zIndex:2 }}>
+        {sel && (
+          <div className="cm2-panel-in" style={{
+            width:308, maxHeight:680, overflowY:"auto",
+            background:"linear-gradient(180deg,#080f1a,#050b14)",
+            borderLeft:`1px solid ${sel.color}28`,
+            padding:"20px 16px", display:"flex", flexDirection:"column", gap:13,
+            fontFamily:"'JetBrains Mono',monospace",
           }}>
-            {/* Header */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                background: selectedNode.color + "20",
-                border: `1px solid ${selectedNode.color}60`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 16, flexShrink: 0
-              }}>{selectedNode.icon}</div>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: 13, color: "#fff", lineHeight: 1.2 }}>
-                  {selectedNode.label.replace('\n', ' ')}
-                </div>
-                <div style={{ fontSize: 9, color: selectedNode.color, marginTop: 2, letterSpacing: "0.1em" }}>
-                  {selectedNode.summary}
+            {/* Title */}
+            <div>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:9 }}>
+                <div style={{ width:38, height:38, borderRadius:"50%",
+                  background:sel.color+"15", border:`1px solid ${sel.color}45`,
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  fontSize:17, flexShrink:0 }}>{sel.icon}</div>
+                <div>
+                  <div style={{ fontWeight:700, fontSize:13, color:"#fff", lineHeight:1.25 }}>
+                    {sel.label.replace("\n"," ")}
+                  </div>
+                  <div style={{ fontSize:9, color:sel.color, marginTop:2, letterSpacing:".1em" }}>
+                    {sel.summary}
+                  </div>
                 </div>
               </div>
+              <div style={{ height:1, background:`linear-gradient(90deg,${sel.color}48,transparent)` }}/>
             </div>
-            <div style={{ height: 1, background: `linear-gradient(90deg,${selectedNode.color}60,transparent)` }} />
 
             {/* Phase badge */}
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              background: phaseColor(selectedNode.phase) + "15",
-              border: `1px solid ${phaseColor(selectedNode.phase)}40`,
-              borderRadius: 3, padding: "3px 8px", width: "fit-content"
-            }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", background: phaseColor(selectedNode.phase) }} />
-              <span style={{ fontSize: 9, letterSpacing: "0.12em", color: phaseColor(selectedNode.phase) }}>
-                PHASE {selectedNode.phase} · {CM_PHASES.find(p => p.phase === selectedNode.phase)?.sub}
-              </span>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:6,
+              background:phaseInfo(sel.phase).color+"10",
+              border:`1px solid ${phaseInfo(sel.phase).color}28`,
+              borderRadius:3, padding:"3px 10px", width:"fit-content",
+              fontSize:9, letterSpacing:".12em", color:phaseInfo(sel.phase).color }}>
+              <div style={{ width:5, height:5, borderRadius:"50%", background:phaseInfo(sel.phase).color }}/>
+              PHASE {sel.phase} · {phaseInfo(sel.phase).label} · {phaseInfo(sel.phase).sublabel}
             </div>
 
-            {/* Detail */}
-            <p style={{ fontSize: 11, lineHeight: 1.7, color: "#94a3b8", margin: 0 }}>
-              {selectedNode.detail}
-            </p>
+            {/* Gen comparison callout */}
+            {(sel.id === "gen1_transport" || sel.id === "gen2_transport") && (
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
+                {[
+                  { id:"gen1_transport", label:"GEN 1", isp:"~3,000–5,000s", mars:"4–6 months", outer:"limited",  drive:"Ion",    color:"#4ade80" },
+                  { id:"gen2_transport", label:"GEN 2", isp:"~10,000–20,000s", mars:"weeks",    outer:"routine", drive:"Fusion", color:"#fbbf24" },
+                ].map(g => (
+                  <div key={g.id} style={{
+                    background: sel.id===g.id ? g.color+"15" : "#0a141e",
+                    border:`1px solid ${g.color}${sel.id===g.id?"50":"20"}`,
+                    borderRadius:4, padding:"9px 10px"
+                  }}>
+                    <div style={{ fontSize:9, color:g.color, letterSpacing:".12em", marginBottom:6 }}>
+                      {g.label} · {g.drive}
+                    </div>
+                    <div style={{ fontSize:9.5, color:"#94a3b8", lineHeight:1.7 }}>
+                      <div>Isp <span style={{ color:"#e2e8f0" }}>{g.isp}</span></div>
+                      <div>Mars <span style={{ color:"#e2e8f0" }}>{g.mars}</span></div>
+                      <div>Outer <span style={{ color:"#e2e8f0" }}>{g.outer}</span></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Detail text */}
+            <p style={{ fontSize:11, lineHeight:1.78, color:"#94a3b8", margin:0 }}>{sel.detail}</p>
 
             {/* Enables */}
-            <div>
-              <div style={{ fontSize: 9, color: "#475569", letterSpacing: "0.15em", marginBottom: 6 }}>ENABLES →</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                {CM_CONNECTIONS.filter(c => c.from === selectedNode.id).map(c => {
-                  const t = getNode(c.to);
-                  return t ? (
-                    <div key={c.to} className="cm-tag"
-                      onClick={() => setSelected(c.to)}
-                      style={{ color: t.color, borderColor: t.color + "40", background: t.color + "15" }}>
-                      {t.icon} {t.label.replace('\n', ' ')}
-                    </div>
-                  ) : null;
-                })}
-                {CM_CONNECTIONS.filter(c => c.from === selectedNode.id).length === 0 && (
-                  <span style={{ fontSize: 10, color: "#334155", fontStyle: "italic" }}>Terminal — civilisational outcome</span>
-                )}
+            {CM_CONNECTIONS.filter(c => c.from === sel.id).length > 0 && (
+              <div>
+                <div style={{ fontSize:9, color:"#475569", letterSpacing:".13em", marginBottom:6 }}>ENABLES →</div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+                  {CM_CONNECTIONS.filter(c => c.from === sel.id).map(c => {
+                    const t = getNode(c.to);
+                    return t ? (
+                      <div key={c.to} className="cm2-chip" onClick={() => setSelected(c.to)}
+                        style={{ background:t.color+"10", border:`1px solid ${t.color}30`, color:t.color }}>
+                        {t.icon} {t.label.replace("\n"," ")}
+                      </div>
+                    ) : null;
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Requires */}
-            <div>
-              <div style={{ fontSize: 9, color: "#475569", letterSpacing: "0.15em", marginBottom: 6 }}>← REQUIRES</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                {CM_CONNECTIONS.filter(c => c.to === selectedNode.id).map(c => {
-                  const s = getNode(c.from);
-                  return s ? (
-                    <div key={c.from} className="cm-tag"
-                      onClick={() => setSelected(c.from)}
-                      style={{ color: s.color + "cc", borderColor: s.color + "30", background: s.color + "10" }}>
-                      {s.icon} {s.label.replace('\n', ' ')}
-                    </div>
-                  ) : null;
-                })}
-                {CM_CONNECTIONS.filter(c => c.to === selectedNode.id).length === 0 && (
-                  <span style={{ fontSize: 10, color: "#334155", fontStyle: "italic" }}>Root — no prerequisites</span>
-                )}
+            {CM_CONNECTIONS.filter(c => c.to === sel.id).length > 0 && (
+              <div>
+                <div style={{ fontSize:9, color:"#475569", letterSpacing:".13em", marginBottom:6 }}>← REQUIRES</div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+                  {CM_CONNECTIONS.filter(c => c.to === sel.id).map(c => {
+                    const s = getNode(c.from);
+                    return s ? (
+                      <div key={c.from} className="cm2-chip" onClick={() => setSelected(c.from)}
+                        style={{ background:s.color+"0a", border:`1px solid ${s.color}22`, color:s.color+"aa" }}>
+                        {s.icon} {s.label.replace("\n"," ")}
+                      </div>
+                    ) : null;
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
-            <button className="cm-close" style={{ marginTop: "auto" }} onClick={() => setSelected(null)}>
+            {sel.id === "solar_system" && (
+              <div style={{ padding:"10px", borderRadius:3, background:"#fb923c08",
+                border:"1px solid #fb923c28", fontSize:9.5, color:"#fb923c", lineHeight:1.65 }}>
+                ◉ TERMINAL NODE — two parallel paths converge here. Gen1 opens the inner solar system. Gen2 opens everything.
+              </div>
+            )}
+
+            <button onClick={() => setSelected(null)} style={{
+              marginTop:"auto", background:"transparent", border:"1px solid #1e293b",
+              color:"#475569", borderRadius:3, padding:"7px", cursor:"pointer",
+              fontSize:9, letterSpacing:".12em", fontFamily:"'JetBrains Mono',monospace",
+              transition:"all .2s" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor="#475569"; e.currentTarget.style.color="#94a3b8"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor="#1e293b"; e.currentTarget.style.color="#475569"; }}>
               CLOSE PANEL
             </button>
           </div>
