@@ -52,13 +52,13 @@ const CM_NODES = [
     summary:"Aneutronic propulsion cracked",
     detail:"D-T fusion can't propel ships well — ~80% of energy exits as neutrons, undirectable as exhaust. Aneutronic fuels like D-He3 produce charged particles that can be magnetically directed as thrust: 10,000–20,000+ seconds Isp vs ion drives at ~3,000s and chemical at ~380s. AGI-accelerated plasma physics makes this timeline plausible. Direct Fusion Drive also outputs electricity simultaneously." },
 
-  // Phase 5 — y:137
-  { id:"gen2_transport", label:"Gen 2 Transport\n(Fusion Drive)",  icon:"◉", x:50, y:137, phase:5, color:"#fbbf24",
+  // Phase 5 — y:133
+  { id:"gen2_transport", label:"Gen 2 Transport\n(Fusion Drive)",  icon:"◉", x:50, y:133, phase:5, color:"#fbbf24",
     summary:"Full solar system, weeks not months",
     detail:"Gen2 ships replace ion drives with fusion propulsion — same hull architecture, upgraded powerplant. The Isp jump from ~3,000s to 10,000–20,000s is transformative: Mars in weeks instead of months. Outer planets move from 'technically possible' to 'operationally routine'. Crewed Jupiter missions become conceivable. Saturn reachable and returnable within a career." },
 
-  // Terminal — y:166
-  { id:"solar_system",   label:"Solar System\nAccessible",         icon:"🌌", x:50, y:166, phase:5, color:"#fb923c",
+  // Terminal — y:167
+  { id:"solar_system",   label:"Solar System\nAccessible",         icon:"🌌", x:50, y:167, phase:5, color:"#fb923c",
     summary:"Civilisational expansion",
     detail:"The terminal convergence. Gen1 opens the inner solar system — Mars colonisation, asteroid belt resource extraction, permanent Lagrange point infrastructure. Gen2 opens everything: outer planets, their moons, the Kuiper belt. Physical scarcity of resources collapses — the solar system contains more of every element than humanity could consume in millennia." },
 ];
@@ -117,8 +117,8 @@ const CM_BANDS = [
   { phase:2, y:31  },
   { phase:3, y:59  },
   { phase:4, y:88  },
-  { phase:5, y:123 },
-  { phase:6, y:152, label:"TERMINAL NODE", sublabel:"civilisational outcome", color:"#fb923c" },
+  { phase:5, y:119 },
+  { phase:6, y:153, label:"TERMINAL NODE", sublabel:"civilisational outcome", color:"#fb923c" },
 ];
 
 function ConvergenceMap() {
