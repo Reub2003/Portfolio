@@ -143,7 +143,7 @@ function ConvergenceMap() {
   const connlit = c => !!focus && (c.from === focus || c.to === focus);
 
   return (
-    <div style={{ display:"flex", position:"relative", background:"#04080f", margin:"0 auto" }}>
+    <div style={{ display:"flex", justifyContent:"center" }}>
       <style>{`
         @keyframes cm3-dashflow { to { stroke-dashoffset:-20; } }
         @keyframes cm3-ripple { 0%,100%{opacity:.45} 50%{opacity:0} }
@@ -170,6 +170,7 @@ function ConvergenceMap() {
         .cm3-close:hover { border-color:#475569; color:#94a3b8; }
       `}</style>
 
+    <div style={{ display:"flex", position:"relative", background:"#04080f" }}>
       <div className="cm3-grid" />
 
       {/* SVG graph — fixed width, never resizes when panel opens */}
@@ -283,15 +284,18 @@ function ConvergenceMap() {
         </svg>
       </div>
 
-      {/* Detail panel — always reserves space in the right column */}
-      <div style={{ flex:1, minWidth:260, position:"relative", zIndex:2, overflow:"hidden" }}>
+      {/* Detail panel — transitions from 0 to fixed width; centering div handles map shift */}
+      <div style={{
+        width: sel ? 320 : 0, flexShrink:0, overflow:"hidden",
+        transition:"width .45s cubic-bezier(.4,0,.2,1)", position:"relative", zIndex:2,
+      }}>
         {sel && (
           <div className="cm3-panel-in" style={{
-            overflowY:"auto", height:"100%",
+            width:320, overflowY:"auto",
             background:"linear-gradient(180deg,#080f1a,#050b14)",
             borderLeft:`1px solid ${sel.color}28`,
             padding:"20px 16px", display:"flex", flexDirection:"column", gap:13,
-            fontFamily:"'JetBrains Mono',monospace", boxSizing:"border-box",
+            fontFamily:"'JetBrains Mono',monospace",
           }}>
             {/* Title */}
             <div>
@@ -403,6 +407,7 @@ function ConvergenceMap() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }
