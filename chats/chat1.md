@@ -1,4 +1,4 @@
-# Portfolio Website Redesign
+ Portfolio Website Redesign
 
 _Started 2026-05-08 23:15 UTC_
 
@@ -7,10 +7,6 @@ _Started 2026-05-08 23:15 UTC_
 ## User
 
 https://reub2003.github.io/Portfolio/
-
-ok idk if u can see my portfolio website but i kinda want to make the design better a bit like spacex with the videos and slow pans and all, but just that vibe
-
-Anyway i kinda want a 3 part website, a portfolio of what ive done, a blog just to talk about stuff, and then a dashboard page about my plans and vision of the future for space
 
 ## Assistant
 
@@ -125,7 +121,6 @@ Bearings is featured first, BlueSAT second as you asked. Dashboard content is a 
 
 ## User
 
-ok i was gs lead from 2024 to end of 2025, so iim no longer doiong blue sat just letting you know, and my only active project is the bearings thesis, also can u add a section f1 in schoole that i did in 2017 to 2018 (did my own schoole round in 2017 and won the SEA finals in 2018 at GIS malaysia for both, the team went on to compete in abu dhabi and meet lewis hamilton and the mercedes team in 2019 but i didnt follow to do rugby as GIS u18 captain)  that was what started my interext in engineering, also dont put the title as building systems for fllight and orbit, put aerospace undergrad and aspring systems engineer or smn along those lines, otherwise its really good, the current thing im apart of is warrane college where im a residential tutor, another thing we can put ig was thtat i was an undergrad engineer at seymour whyte as part of the neligen bridge replacement project from 2022 to 2024
 
 ## Assistant
 
@@ -158,7 +153,6 @@ Updated:
 
 ## User
 
-lil thing but cfd and fem was actually 2025, also with the currently tab change warrane from tutoring to Profession or current position along those lines, because the residential tutor postion  is actually more along the lines of an RA
 
 ## Assistant
 
@@ -172,7 +166,6 @@ Updated — CFD/FEM moved to 2025, Currently panel now says "POSITION", and the 
 
 ## User
 
-ok u know how uve number themed make them by year, so 06 f1, 05 ev, 04 seymour whyte, 03 cfd and FEm, and then yea 02 and 01 as is
 
 ## Assistant
 
@@ -186,7 +179,6 @@ Reordered — most-recent-on-top: 01 Bearings, 02 BlueSAT, 03 CFD & FEM, 04 Seym
 
 ## User
 
-nice nice can u now put placeholder section for each of the projects ive mentioned in work, ill edit those later with the correct descriptions and add pictures and all
 
 ## Assistant
 
