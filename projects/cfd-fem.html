@@ -202,7 +202,33 @@
   .proj-nav a:hover { color: var(--accent); }
   .proj-nav .center { color: var(--ink-faint); }
 
+  .proj-papers {
+    padding: 0 var(--pad-x) var(--pad-y);
+  }
+  .proj-papers .paper-block {
+    margin-bottom: 48px;
+    border: 1px solid var(--rule);
+  }
+  .proj-papers .paper-label {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .proj-papers .paper-num { color: var(--ink-faint); }
+  .proj-papers .paper-title { color: var(--ink-dim); flex: 1; }
+  .proj-papers .paper-link { color: var(--ink-dim); transition: color 0.2s; }
+  .proj-papers .paper-link:hover { color: var(--ink); }
+  .proj-papers iframe {
+    width: 100%; height: 780px;
+    border: none; display: block;
+    background: #fff;
+  }
+
   @media (max-width: 920px) {
+    .proj-papers iframe { height: 500px; }
+  }
     .proj-overview { grid-template-columns: 1fr; gap: 36px; }
     .proj-gallery .grid { grid-template-columns: 1fr; }
     .proj-gallery .slot.tall { grid-row: auto; min-height: 360px; }
@@ -216,15 +242,15 @@
 <script>
   (function(){
     try {
-      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v1') || '{}');
-      var a = t.accent || '#f7a13c';
+      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v2') || '{}');
+      var a = t.accent || '#e8eaed';
       var P = {
         navyAmber:    {bg:'#06101c',surface:'#0c1726',s2:'#131f30',ink:'#e8edf3',dim:'#8493a5',faint:'#4a5668'},
         inkWhite:     {bg:'#0a0a0a',surface:'#141414',s2:'#1d1d1d',ink:'#f4f4f4',dim:'#888888',faint:'#444444'},
         charcoalCyan: {bg:'#0e1418',surface:'#161e24',s2:'#1f2a32',ink:'#e8eef2',dim:'#7e8e98',faint:'#475058'},
         hudGreen:     {bg:'#080c0a',surface:'#0e1410',s2:'#161e18',ink:'#e6f0e8',dim:'#7c8e80',faint:'#465048'},
       };
-      var p = P[t.palette] || P.navyAmber;
+      var p = P[t.palette] || P.inkWhite;
       var s = document.documentElement.style;
       s.setProperty('--bg', p.bg); s.setProperty('--surface', p.surface);
       s.setProperty('--surface-2', p.s2); s.setProperty('--ink', p.ink);
@@ -282,8 +308,7 @@
 </section>
 
 <div class="proj-hero-media">
-  <div class="placeholder-img">[ BATTERY COOLING CHAMBER · CFD ]</div>
-  <div class="scan"></div>
+  <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" />
 </div>
 
 <section class="proj-overview shell">
@@ -315,13 +340,37 @@
 <section class="proj-gallery shell">
   <div class="sec-head">
     <div class="num">MEDIA / 03</div>
-    <h2>Documentation.</h2>
-    <div class="tail">3 SLOTS · TBA</div>
+    <h2>Simulations.</h2>
+    <div class="tail">3 SLOTS</div>
   </div>
   <div class="grid">
-    <div class="slot tall"><div class="placeholder-img">[ BATTERY COOLING CHAMBER · CFD ]</div></div>
-    <div class="slot"><div class="placeholder-img">[ BRAKE DISC · THERMAL FIELD ]</div></div>
-    <div class="slot"><div class="placeholder-img">[ BRAKE DISC · STRESS PLOT ]</div></div>
+    <div class="slot tall"><img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+    <div class="slot"><img src="../images/cfd-fem/femimage.png" alt="FEM brake disc mesh" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+    <div class="slot"><img src="../images/cfd-fem/femimageclose.png" alt="FEM stress close-up" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+  </div>
+</section>
+
+<section class="proj-papers shell">
+  <div class="sec-head">
+    <div class="num">PAPERS / 03</div>
+    <h2>Full reports.</h2>
+    <div class="tail">2 PAPERS</div>
+  </div>
+  <div class="paper-block">
+    <div class="paper-label">
+      <span class="paper-num">/ 01</span>
+      <span class="paper-title">CFD — Battery Cooling Chamber · MECH4620</span>
+      <a href="../papers/cfd-report.pdf" target="_blank" class="paper-link">Open PDF ↗</a>
+    </div>
+    <iframe src="../papers/cfd-report.pdf" title="CFD report"></iframe>
+  </div>
+  <div class="paper-block">
+    <div class="paper-label">
+      <span class="paper-num">/ 02</span>
+      <span class="paper-title">FEM — Brake Disc Thermal-Structural Analysis</span>
+      <a href="../papers/fem-report.pdf" target="_blank" class="paper-link">Open PDF ↗</a>
+    </div>
+    <iframe src="../papers/fem-report.pdf" title="FEM report"></iframe>
   </div>
 </section>
 
