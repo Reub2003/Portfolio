@@ -119,23 +119,24 @@
     color: var(--ink-dim);
     position: relative;
   }
-  .hero-sub::after {
+  .hero-sub b { color: var(--ink); font-weight: 500; }
+
+  .hero-cta-row {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .hero-cta-row::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -14px;
     left: -16px;
     width: 18px;
     height: 22px;
     border-bottom: 1px solid var(--accent);
     border-left: 1px solid var(--accent);
     pointer-events: none;
-  }
-  .hero-sub b { color: var(--ink); font-weight: 500; }
-
-  .hero-cta-row {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
   }
 
   /* HUD corners */
