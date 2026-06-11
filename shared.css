@@ -4,18 +4,18 @@
 
 :root {
   /* Palette — overridden by Tweaks panel via inline style */
-  --bg:        #06101c;
-  --bg-deep:   #03080f;
-  --surface:   #0c1726;
-  --surface-2: #131f30;
-  --ink:       #e8edf3;
-  --ink-dim:   #8493a5;
-  --ink-faint: #4a5668;
-  --rule:        rgba(255,255,255,0.07);
-  --rule-strong: rgba(255,255,255,0.18);
-  --accent:     #f7a13c;
-  --accent-dim: rgba(247,161,60,0.35);
-  --accent-glow: rgba(247,161,60,0.18);
+  --bg:        #0a0a0a;
+  --bg-deep:   #000000;
+  --surface:   #141414;
+  --surface-2: #1e1e1e;
+  --ink:       #f4f4f4;
+  --ink-dim:   #888888;
+  --ink-faint: #444444;
+  --rule:        rgba(255,255,255,0.08);
+  --rule-strong: rgba(255,255,255,0.22);
+  --accent:     #e8eaed;
+  --accent-dim: rgba(232,234,237,0.30);
+  --accent-glow: rgba(232,234,237,0.10);
 
   /* Typography */
   --font-display: "Archivo Narrow", "Archivo", "Helvetica Neue", sans-serif;
@@ -44,11 +44,7 @@ html, body {
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  /* Cinematic film-grain & vignette pulled together */
-  background:
-    radial-gradient(140% 90% at 50% -10%, rgba(247,161,60,0.06), transparent 55%),
-    radial-gradient(120% 80% at 50% 110%, rgba(60,90,140,0.10), transparent 60%),
-    var(--bg);
+  background: var(--bg);
 }
 
 /* faint scan-lines overlay everywhere */
@@ -255,7 +251,7 @@ footer.foot {
 }
 footer.foot .col { display: flex; flex-direction: column; gap: 6px; }
 footer.foot .col b { color: var(--ink); font-weight: 500; }
-footer.foot a:hover { color: var(--accent); }
+footer.foot a:hover { color: var(--ink); }
 
 /* ── Telemetry strip ─────────────────────────────────── */
 
@@ -363,9 +359,9 @@ footer.foot a:hover { color: var(--accent); }
   transition: all 0.2s;
 }
 .cta:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(247,161,60,0.06);
+  border-color: var(--ink);
+  color: var(--ink);
+  background: rgba(255,255,255,0.06);
 }
 .cta .arrow { transition: transform 0.2s; }
 .cta:hover .arrow { transform: translateX(4px); }

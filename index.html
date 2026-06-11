@@ -19,9 +19,7 @@
     position: absolute; inset: 0;
     z-index: 0;
     pointer-events: none;
-    background:
-      radial-gradient(80% 60% at 50% 50%, rgba(247,161,60,0.08), transparent 60%),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 80%, var(--bg) 100%);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 80%, var(--bg) 100%);
   }
   .hero-bg::before {
     content: "";
@@ -30,10 +28,10 @@
     width: 200vmin; height: 200vmin;
     transform: translate(-50%, -50%);
     background-image:
-      radial-gradient(circle, transparent 49.6%, rgba(247,161,60,0.10) 49.8%, rgba(247,161,60,0.10) 50.0%, transparent 50.2%),
-      radial-gradient(circle, transparent 39.6%, rgba(132,147,165,0.08) 39.8%, rgba(132,147,165,0.08) 40.0%, transparent 40.2%),
-      radial-gradient(circle, transparent 29.6%, rgba(132,147,165,0.10) 29.8%, rgba(132,147,165,0.10) 30.0%, transparent 30.2%),
-      radial-gradient(circle, transparent 19.6%, rgba(247,161,60,0.10) 19.8%, rgba(247,161,60,0.10) 20.0%, transparent 20.2%);
+      radial-gradient(circle, transparent 49.6%, rgba(255,255,255,0.04) 49.8%, rgba(255,255,255,0.04) 50.0%, transparent 50.2%),
+      radial-gradient(circle, transparent 39.6%, rgba(200,210,220,0.04) 39.8%, rgba(200,210,220,0.04) 40.0%, transparent 40.2%),
+      radial-gradient(circle, transparent 29.6%, rgba(200,210,220,0.05) 29.8%, rgba(200,210,220,0.05) 30.0%, transparent 30.2%),
+      radial-gradient(circle, transparent 19.6%, rgba(255,255,255,0.04) 19.8%, rgba(255,255,255,0.04) 20.0%, transparent 20.2%);
     animation: spin-slow 240s linear infinite;
   }
   .hero-bg::after {
@@ -194,7 +192,7 @@
   (function(){
     try {
       var t = JSON.parse(localStorage.getItem('reuben.tweaks.v1') || '{}');
-      var a = t.accent || '#f7a13c';
+      var a = t.accent || '#e8eaed';
       var P = {
         navyAmber:    {bg:'#06101c',surface:'#0c1726',s2:'#131f30',ink:'#e8edf3',dim:'#8493a5',faint:'#4a5668'},
         inkWhite:     {bg:'#0a0a0a',surface:'#141414',s2:'#1d1d1d',ink:'#f4f4f4',dim:'#888888',faint:'#444444'},
@@ -278,9 +276,9 @@
       </div>
 
       <h1>
-        <span class="l1">PEPE</span>
-        <span class="l2">is</span>
-        <span class="l3">bald.</span>
+        <span class="l1">Aerospace</span>
+        <span class="l2">undergrad &amp;</span>
+        <span class="l3">systems engineer.</span>
       </h1>
 
       <p class="hero-sub">
@@ -352,7 +350,7 @@
   .featured-media .scan {
     position: absolute; inset: 0;
     pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgba(247,161,60,0.12) 50%, transparent);
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.06) 50%, transparent);
     height: 30%;
     animation: scan-pass 6s ease-in-out infinite;
   }
@@ -454,88 +452,140 @@
 
 
 <style>
-  /* Work index */
+  /* Work cards — Apple style */
   .work {
     padding: var(--pad-y) var(--pad-x);
   }
-  .work-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--rule);
-  }
-  .work-list li {
-    border-bottom: 1px solid var(--rule);
-    transition: background 0.25s;
-  }
-  .work-list li:hover {
-    background: linear-gradient(90deg, transparent, rgba(247,161,60,0.06) 50%, transparent);
-  }
-  .work-list a {
+  .work-cards {
     display: grid;
-    grid-template-columns: 60px 1fr 200px 100px 60px;
-    gap: 24px;
-    align-items: center;
-    padding: 28px 8px;
-    color: var(--ink);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
-  .work-list .ix {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    color: var(--ink-faint);
+  .work-card, .work-card-featured {
+    background: #f5f5f7;
+    border-radius: 18px;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    transition: transform 0.32s cubic-bezier(.4,0,.2,1), box-shadow 0.32s cubic-bezier(.4,0,.2,1);
+    color: #1d1d1f;
   }
-  .work-list .ix.featured-mark { color: var(--accent); }
-  .work-list .name {
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    font-size: clamp(22px, 2.4vw, 36px);
-    line-height: 1;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    transition: color 0.2s;
+  .work-card:hover, .work-card-featured:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 28px 72px rgba(0,0,0,0.35);
   }
-  .work-list li:hover .name { color: var(--accent); }
-  .work-list .name em {
-    font-style: italic;
-    color: var(--ink-dim);
-    font-weight: 400;
-    margin-left: 12px;
-    font-size: 0.6em;
-    letter-spacing: 0.08em;
+  .work-card-featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
   }
-  .work-list .tags {
+  .work-card-img {
+    background: #1a1a1a;
+    overflow: hidden;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .work-list .tag {
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-dim);
-    padding: 4px 8px;
-    border: 1px solid var(--rule-strong);
+    color: #444;
+    position: relative;
+    min-height: 160px;
   }
-  .work-list .year {
+  .work-card-featured .work-card-img {
+    min-height: 280px;
+  }
+  .work-card-img::before {
+    content: "";
+    position: absolute;
+    top: 14px; left: 14px;
+    width: 12px; height: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-left: 1px solid rgba(255,255,255,0.2);
+  }
+  .work-card-img::after {
+    content: "";
+    position: absolute;
+    bottom: 14px; right: 14px;
+    width: 12px; height: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
+  .work-card-body {
+    padding: 22px 24px 26px;
+  }
+  .work-card-featured .work-card-body {
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .work-card-num {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.14em;
-    color: var(--ink-dim);
-    text-align: right;
+    text-transform: uppercase;
+    color: #6e6e73;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .work-list .arrow {
+  .work-card-num .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #30d158;
+    display: inline-block;
+    box-shadow: 0 0 6px #30d158;
+  }
+  .work-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.2vw, 34px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    color: #1d1d1f;
+    margin: 0 0 6px;
+  }
+  .work-card-sub {
+    font-size: 13px;
+    color: #6e6e73;
+    font-style: italic;
+    margin: 0 0 16px;
+  }
+  .work-card-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .work-card-tag {
     font-family: var(--font-mono);
-    font-size: 18px;
-    color: var(--ink-faint);
-    transition: all 0.2s;
-    text-align: right;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6e6e73;
+    background: rgba(0,0,0,0.07);
+    border-radius: 5px;
+    padding: 3px 8px;
   }
-  .work-list li:hover .arrow {
-    color: var(--accent);
-    transform: translateX(6px);
+  .work-card-year {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #aaaaaa;
+    margin-top: 16px;
   }
+  .work-card-arrow {
+    font-size: 16px;
+    color: #1d1d1f;
+    margin-top: 20px;
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .work-card:hover .work-card-arrow,
+  .work-card-featured:hover .work-card-arrow { transform: translateX(5px); }
 
   /* About / Currently */
   .about {
@@ -640,86 +690,117 @@
     <div class="tail">06 ENTRIES · 2017 — 2026</div>
   </div>
 
-  <ol class="work-list">
-    <li>
-      <a href="projects/bearings.html">
-        <span class="ix featured-mark">FEAT 01</span>
-        <span class="name">Bearings <em>thesis · vibration sensing</em></span>
-        <span class="tags">
-          <span class="tag">Thesis</span>
-          <span class="tag">DSP</span>
-          <span class="tag">Sensors</span>
-        </span>
-        <span class="year">2026 · ACTIVE</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="projects/bluesat.html">
-        <span class="ix">/ 02</span>
-        <span class="name">BlueSAT <em>groundstation lead · RF</em></span>
-        <span class="tags">
-          <span class="tag">RF</span>
-          <span class="tag">Lead</span>
-          <span class="tag">UNSW</span>
-        </span>
-        <span class="year">2024 — 25</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="projects/cfd-fem.html">
-        <span class="ix">/ 03</span>
-        <span class="name">CFD &amp; FEM <em>battery cooling · brake disc</em></span>
-        <span class="tags">
-          <span class="tag">CFD</span>
-          <span class="tag">FEM</span>
-          <span class="tag">Coursework</span>
-        </span>
-        <span class="year">2025</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="projects/seymour-whyte.html">
-        <span class="ix">/ 04</span>
-        <span class="name">Seymour Whyte <em>undergrad eng · Nelligen Bridge</em></span>
-        <span class="tags">
-          <span class="tag">Civil</span>
-          <span class="tag">Industry</span>
-          <span class="tag">Site</span>
-        </span>
-        <span class="year">2022 — 24</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="projects/ev-transit.html">
-        <span class="ix">/ 05</span>
-        <span class="name">EV Transit <em>homemade battery pack</em></span>
-        <span class="tags">
-          <span class="tag">Electrochem</span>
-          <span class="tag">Build</span>
-          <span class="tag">DESN1000</span>
-        </span>
-        <span class="year">2023</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="projects/f1-schools.html">
-        <span class="ix">/ 06</span>
-        <span class="name">F1 in Schools <em>SEA finals winner · GIS Malaysia</em></span>
-        <span class="tags">
-          <span class="tag">Origin</span>
-          <span class="tag">CAD/CFD</span>
-          <span class="tag">Schools</span>
-        </span>
-        <span class="year">2017 — 18</span>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ol>
+  <div class="work-cards">
+
+    <!-- Featured — full width horizontal -->
+    <a href="projects/bearings.html" class="work-card-featured">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#0f1520,#1a2236);">
+        [ TEST RIG · ACCELEROMETER ARRAY ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">
+          <span class="live-dot"></span>FEAT 01 · ACTIVE
+        </div>
+        <div class="work-card-title">Bearings</div>
+        <div class="work-card-sub">thesis · vibration sensing</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">Thesis</span>
+          <span class="work-card-tag">DSP</span>
+          <span class="work-card-tag">Sensors</span>
+        </div>
+        <div class="work-card-year">2026</div>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Row of 3 -->
+    <a href="projects/bluesat.html" class="work-card">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#050d18,#0a1828);">
+        [ GROUNDSTATION · RF ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">/ 02</div>
+        <div class="work-card-title">BlueSAT</div>
+        <div class="work-card-sub">groundstation lead · RF</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">RF</span>
+          <span class="work-card-tag">Lead</span>
+          <span class="work-card-tag">UNSW</span>
+        </div>
+        <div class="work-card-year">2024 — 25</div>
+      </div>
+    </a>
+
+    <a href="projects/cfd-fem.html" class="work-card">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#120e1e,#1a1228);">
+        [ CFD MESH · THERMAL ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">/ 03</div>
+        <div class="work-card-title">CFD &amp; FEM</div>
+        <div class="work-card-sub">battery cooling · brake disc</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">CFD</span>
+          <span class="work-card-tag">FEM</span>
+          <span class="work-card-tag">Coursework</span>
+        </div>
+        <div class="work-card-year">2025</div>
+      </div>
+    </a>
+
+    <a href="projects/seymour-whyte.html" class="work-card">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#18140e,#221c10);">
+        [ NELLIGEN BRIDGE · SITE ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">/ 04</div>
+        <div class="work-card-title">Seymour Whyte</div>
+        <div class="work-card-sub">undergrad eng · Nelligen Bridge</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">Civil</span>
+          <span class="work-card-tag">Industry</span>
+          <span class="work-card-tag">Site</span>
+        </div>
+        <div class="work-card-year">2022 — 24</div>
+      </div>
+    </a>
+
+    <!-- Row of 2 -->
+    <a href="projects/ev-transit.html" class="work-card">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#0a1810,#0f2016);">
+        [ BATTERY PACK · DESN1000 ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">/ 05</div>
+        <div class="work-card-title">EV Transit</div>
+        <div class="work-card-sub">homemade battery pack</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">Electrochem</span>
+          <span class="work-card-tag">Build</span>
+          <span class="work-card-tag">DESN1000</span>
+        </div>
+        <div class="work-card-year">2023</div>
+      </div>
+    </a>
+
+    <a href="projects/f1-schools.html" class="work-card">
+      <div class="work-card-img" style="background: linear-gradient(140deg,#1a0a0a,#280e0e);">
+        [ CO₂ CAR · SEA FINALS ]
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-num">/ 06</div>
+        <div class="work-card-title">F1 in Schools</div>
+        <div class="work-card-sub">SEA finals winner · GIS Malaysia</div>
+        <div class="work-card-tags">
+          <span class="work-card-tag">Origin</span>
+          <span class="work-card-tag">CAD/CFD</span>
+          <span class="work-card-tag">Schools</span>
+        </div>
+        <div class="work-card-year">2017 — 18</div>
+      </div>
+    </a>
+
+  </div>
 </section>
 
 <style>
