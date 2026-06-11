@@ -137,8 +137,7 @@
   }
   .proj-gallery .grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-auto-rows: minmax(220px, auto);
+    grid-template-columns: 1fr 1fr;
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
@@ -147,11 +146,18 @@
     background: var(--bg);
     position: relative;
     overflow: hidden;
-    min-height: 280px;
-    aspect-ratio: auto;
+    min-height: 320px;
   }
-  .proj-gallery .slot.tall { grid-row: span 2; min-height: 560px; }
-  .proj-gallery .slot .placeholder-img { position: absolute; inset: 0; border: 0; }
+  .proj-gallery .slot.wide { grid-column: span 2; min-height: 420px; }
+  .proj-gallery .slot img { width:100%; height:100%; object-fit:cover; display:block; }
+  .proj-gallery .slot .caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 10px 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
 
   .proj-outcomes {
     padding: var(--pad-y) var(--pad-x);
@@ -344,9 +350,18 @@
     <div class="tail">3 SLOTS</div>
   </div>
   <div class="grid">
-    <div class="slot tall"><img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-    <div class="slot"><img src="../images/cfd-fem/femimage.png" alt="FEM brake disc mesh" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-    <div class="slot"><img src="../images/cfd-fem/femimageclose.png" alt="FEM stress close-up" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+    <div class="slot wide">
+      <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" />
+      <div class="caption">CFD — Battery cooling chamber · Temperature field</div>
+    </div>
+    <div class="slot">
+      <img src="../images/cfd-fem/femimage.png" alt="FEM brake disc mesh" />
+      <div class="caption">FEM — Brake disc · Full mesh</div>
+    </div>
+    <div class="slot">
+      <img src="../images/cfd-fem/femimageclose.png" alt="FEM stress close-up" />
+      <div class="caption">FEM — Brake disc · Stress concentration close-up</div>
+    </div>
   </div>
 </section>
 
