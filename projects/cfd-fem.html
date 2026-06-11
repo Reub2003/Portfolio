@@ -69,10 +69,15 @@
   .proj-hero .meta-strip .v.amber { color: var(--accent); }
 
   .proj-hero-media {
-    aspect-ratio: 21 / 9;
+    height: clamp(300px, 42vw, 680px);
     margin-top: 0;
     position: relative;
     overflow: hidden;
+  }
+  .proj-hero-media img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
   }
   .proj-hero-media .placeholder-img { position: absolute; inset: 0;
     animation: pan-up 16s ease-in-out infinite alternate;
@@ -146,11 +151,10 @@
     background: var(--bg);
     position: relative;
     overflow: hidden;
-    min-height: 320px;
+    height: 320px;
   }
-  .proj-gallery .slot.wide { grid-column: span 2; min-height: 420px; }
+  .proj-gallery .slot.wide { grid-column: span 2; height: 420px; }
   .proj-gallery .slot img {
-    position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover; display: block;
   }
@@ -318,7 +322,7 @@
 </section>
 
 <div class="proj-hero-media">
-  <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" />
+  <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" />
 </div>
 
 <section class="proj-overview shell">
