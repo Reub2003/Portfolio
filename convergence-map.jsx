@@ -2,63 +2,63 @@
 const { useState, useEffect } = React;
 
 const CM_PHASES = [
-  { phase:1, label:"FOUNDATION",   sublabel:"Now → 5 yrs",  color:"#1e7db5" },
-  { phase:2, label:"CONVERGENCE",  sublabel:"5–10 yrs",     color:"#6d52c4" },
-  { phase:3, label:"EMERGENCE",    sublabel:"10–15 yrs",    color:"#b55510" },
-  { phase:4, label:"EXPANSION",    sublabel:"15–25 yrs",    color:"#1e8a4c" },
-  { phase:5, label:"CIVILISATION", sublabel:"25+ yrs",      color:"#a07010" },
+  { phase:1, label:"FOUNDATION",   sublabel:"Now → 5 yrs",  color:"#4aa8e0" },
+  { phase:2, label:"CONVERGENCE",  sublabel:"5–10 yrs",     color:"#9b82e8" },
+  { phase:3, label:"EMERGENCE",    sublabel:"10–15 yrs",    color:"#e07840" },
+  { phase:4, label:"EXPANSION",    sublabel:"15–25 yrs",    color:"#3ab870" },
+  { phase:5, label:"CIVILISATION", sublabel:"25+ yrs",      color:"#d4a030" },
 ];
 
 // Phase bands: each node row sits ~14 units below its header line
 const CM_NODES = [
   // Phase 1 — y:14
-  { id:"starship",  label:"Heavy Lift\nReusables",         icon:"🚀", x:18, y:14,  phase:1, color:"#1e7db5",
+  { id:"starship",  label:"Heavy Lift\nReusables",         icon:"🚀", x:18, y:14,  phase:1, color:"#4aa8e0",
     summary:"Multiple providers, routine LEO access",
     detail:"Fully reusable heavy-lift rockets make routine LEO access affordable. Starship is the current frontrunner — designed for full reusability, targeting sub-$100/kg to LEO. But the node isn't Starship specifically: it's the class of vehicle. New Glenn from Blue Origin is already flying. Rocket Lab and others are scaling. The unlock is when heavy-lift reusability becomes a competitive market, not a monopoly. Its role in the mature architecture is narrow: atmosphere to LEO only. Everything beyond LEO is handled by vehicles that never touch the ground." },
-  { id:"robotics",  label:"Advanced\nRobotics",            icon:"⬟", x:50, y:14,  phase:1, color:"#1e7db5",
+  { id:"robotics",  label:"Advanced\nRobotics",            icon:"⬟", x:50, y:14,  phase:1, color:"#4aa8e0",
     summary:"Labour automation begins in earnest",
     detail:"Humanoid and specialised robots reach genuine usefulness — reliable enough for repetitive physical labour with remote supervision. The key enabler isn't local intelligence: robots stream cognition from cloud inference in real time. Better hardware + better AI = step change. Labour economics start bending." },
-  { id:"ai_models", label:"AI Model\nProgress",            icon:"◈", x:82, y:14,  phase:1, color:"#1e7db5",
+  { id:"ai_models", label:"AI Model\nProgress",            icon:"◈", x:82, y:14,  phase:1, color:"#4aa8e0",
     summary:"Rapid capability gains continue",
     detail:"AI capabilities compound — reasoning, planning, autonomous agents. Not AGI yet, but increasingly capable of complex engineering and scientific research assistance. The path to AGI runs through cheap compute, which runs through energy abundance, which runs through fusion." },
 
   // Phase 2 — y:42
-  { id:"leo_infra",   label:"LEO\nInfrastructure",         icon:"◎", x:18, y:42,  phase:2, color:"#6d52c4",
+  { id:"leo_infra",   label:"LEO\nInfrastructure",         icon:"◎", x:18, y:42,  phase:2, color:"#9b82e8",
     summary:"Orbit is already becoming industrial",
     detail:"This node is closer than it looks. Over 11,000 Starlink satellites are already in orbit — LEO as persistent infrastructure is no longer theoretical. What heavy-lift reusables unlock next is the harder stuff: propellant depots, orbital assembly platforms, commercial data centres in space, and staging infrastructure for deep-space missions. LEO transitions from a destination to a port — the edge of the gravity well. Without that port, there are no permanent space vehicles further out." },
-  { id:"ai_robotics", label:"AI + Robotics\nSynergy",      icon:"⚙", x:50, y:42,  phase:2, color:"#6d52c4",
+  { id:"ai_robotics", label:"AI + Robotics\nSynergy",      icon:"⚙", x:50, y:42,  phase:2, color:"#9b82e8",
     summary:"Cloud brain meets capable body",
     detail:"Converging AI models with capable robot hardware creates a step change. Robots stream cognition from data centres — no onboard intelligence needed. AI gets embodied feedback: real-world physical data makes models smarter, which makes robots more capable. This enables orbital assembly: robots placed in space, operated from the ground with near-AGI reasoning." },
-  { id:"fusion",      label:"Net Positive\nFusion",         icon:"⚛", x:82, y:42,  phase:2, color:"#6d52c4",
+  { id:"fusion",      label:"Net Positive\nFusion",         icon:"⚛", x:82, y:42,  phase:2, color:"#9b82e8",
     summary:"~10 years, optimistic case",
     detail:"D-T fusion achieves net energy output at commercially meaningful scale. Not immediately grid-dominant — infrastructure takes years — but the energy price trajectory shifts immediately on announcement. AI-assisted plasma physics simulation is a key accelerant. Robots help too: fusion plants require precision construction that robotic systems handle well." },
 
   // Phase 3 — y:70
-  { id:"energy",           label:"Energy\nAbundance",      icon:"∿", x:18, y:70,  phase:3, color:"#b55510",
+  { id:"energy",           label:"Energy\nAbundance",      icon:"∿", x:18, y:70,  phase:3, color:"#e07840",
     summary:"Electricity as near-free resource",
     detail:"Fusion at grid scale means electricity costs approach near-zero. Green hydrogen becomes trivially cheap. Compute runs without energy constraints. Energy-intensive manufacturing — carbon fibre, aluminium, advanced alloys — becomes affordable. Gen2 fusion drives need substantial continuous power; energy abundance is what makes them genuinely practical at scale." },
-  { id:"agi",              label:"AGI\nAssumed",        icon:"◈", x:50, y:70,  phase:3, color:"#b55510",
+  { id:"agi",              label:"AGI\nAssumed",        icon:"◈", x:50, y:70,  phase:3, color:"#e07840",
     summary:"Compute abundance tips the scale",
     detail:"Energy abundance removes the compute ceiling. Training runs that cost $100M become $1M. Inference is near-free. Combined with continued architectural progress, AGI becomes a working assumption — open-ended scientific research, autonomous engineering, generalised problem-solving. AGI-assisted plasma physics directly accelerates fusion drive development." },
-  { id:"orbital_assembly", label:"Orbital\nAssembly",  icon:"🔧", x:82, y:70,  phase:3, color:"#b55510",
+  { id:"orbital_assembly", label:"Orbital\nAssembly",  icon:"🔧", x:82, y:70,  phase:3, color:"#e07840",
     summary:"Robots build ships in orbit",
     detail:"AI-operated robots plus cheap Starship cargo runs enables orbital shipyards. Structures too large to launch assembled — transport hulls, hab modules, power arrays — are built in LEO by robotic crews supervised from the ground. No human EVA required for routine construction. You cannot launch a solar-system-scale ship from Earth's surface." },
 
   // Phase 4 — y:101
-  { id:"gen1_transport", label:"Gen 1 Transport\n(Ion Drive)",    icon:"◉", x:25, y:101, phase:4, color:"#1e8a4c",
+  { id:"gen1_transport", label:"Gen 1 Transport\n(Ion Drive)",    icon:"◉", x:25, y:101, phase:4, color:"#3ab870",
     summary:"Orbit-permanent, inner solar system viable",
     detail:"The first generation of permanent in-space transport ships. Ion drives are well-understood existing technology — the unlock is assembling them at scale in orbit and powering them from abundant energy. Specific impulse ~3,000–5,000 seconds. Mars transit: 4–6 months. Asteroid belt reachable. These ships never enter an atmosphere. They prove the two-tier architecture works." },
-  { id:"fusion_drive",   label:"Fusion Drive\nDeveloped",          icon:"⚡", x:75, y:101, phase:4, color:"#1e8a4c",
+  { id:"fusion_drive",   label:"Fusion Drive\nDeveloped",          icon:"⚡", x:75, y:101, phase:4, color:"#3ab870",
     summary:"Aneutronic propulsion cracked",
     detail:"D-T fusion can't propel ships well — ~80% of energy exits as neutrons, undirectable as exhaust. Aneutronic fuels like D-He3 produce charged particles that can be magnetically directed as thrust: 10,000–20,000+ seconds Isp vs ion drives at ~3,000s and chemical at ~380s. AGI-accelerated plasma physics makes this timeline plausible. Direct Fusion Drive also outputs electricity simultaneously." },
 
   // Phase 5 — y:133
-  { id:"gen2_transport", label:"Gen 2 Transport\n(Fusion Drive)",  icon:"◉", x:50, y:133, phase:5, color:"#a07010",
+  { id:"gen2_transport", label:"Gen 2 Transport\n(Fusion Drive)",  icon:"◉", x:50, y:133, phase:5, color:"#d4a030",
     summary:"Full solar system, weeks not months",
     detail:"Gen2 ships replace ion drives with fusion propulsion — same hull architecture, upgraded powerplant. The Isp jump from ~3,000s to 10,000–20,000s is transformative: Mars in weeks instead of months. Outer planets move from 'technically possible' to 'operationally routine'. Crewed Jupiter missions become conceivable. Saturn reachable and returnable within a career." },
 
   // Terminal — y:167
-  { id:"solar_system",   label:"Solar System\nAccessible",         icon:"🌌", x:50, y:167, phase:5, color:"#b55f20",
+  { id:"solar_system",   label:"Solar System\nAccessible",         icon:"🌌", x:50, y:167, phase:5, color:"#e8943a",
     summary:"Civilisational expansion",
     detail:"The terminal convergence. Gen1 opens the inner solar system — Mars colonisation, asteroid belt resource extraction, permanent Lagrange point infrastructure. Gen2 opens everything: outer planets, their moons, the Kuiper belt. Physical scarcity of resources collapses — the solar system contains more of every element than humanity could consume in millennia." },
 ];
@@ -118,7 +118,7 @@ const CM_BANDS = [
   { phase:3, y:59  },
   { phase:4, y:88  },
   { phase:5, y:119 },
-  { phase:6, y:153, label:"TERMINAL NODE", sublabel:"civilisational outcome", color:"#b55f20" },
+  { phase:6, y:153, label:"TERMINAL NODE", sublabel:"civilisational outcome", color:"#e8943a" },
 ];
 
 function ConvergenceMap() {
@@ -202,11 +202,11 @@ function ConvergenceMap() {
             return (
               <g key={i}>
                 <line x1="2" y1={b.y + 1.8} x2="98" y2={b.y + 1.8}
-                  stroke={ph.color} strokeWidth=".12" opacity=".25"/>
-                <text x="2" y={b.y + .8} fontSize="1.55" fill={ph.color}
-                  fontFamily="monospace" letterSpacing=".14em" opacity=".7">
+                  stroke={ph.color} strokeWidth=".14" opacity=".35"/>
+                <text x="2" y={b.y + .8} fontSize="1.9" fill={ph.color}
+                  fontFamily="monospace" letterSpacing=".14em" opacity=".9">
                   {phNum ? `PHASE ${phNum} · ` : ""}{ph.label}
-                  <tspan fill={ph.color} opacity=".45"> · {ph.sublabel}</tspan>
+                  <tspan fill={ph.color} opacity=".65"> · {ph.sublabel}</tspan>
                 </text>
               </g>
             );
@@ -334,8 +334,8 @@ function ConvergenceMap() {
             {(sel.id === "gen1_transport" || sel.id === "gen2_transport") && (
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
                 {[
-                  { id:"gen1_transport", label:"GEN 1", isp:"~3–5k s",    mars:"4–6 months", outer:"limited", drive:"Ion",    color:"#1e8a4c" },
-                  { id:"gen2_transport", label:"GEN 2", isp:"~10–20k s",  mars:"weeks",       outer:"routine", drive:"Fusion", color:"#a07010" },
+                  { id:"gen1_transport", label:"GEN 1", isp:"~3–5k s",    mars:"4–6 months", outer:"limited", drive:"Ion",    color:"#3ab870" },
+                  { id:"gen2_transport", label:"GEN 2", isp:"~10–20k s",  mars:"weeks",       outer:"routine", drive:"Fusion", color:"#d4a030" },
                 ].map(g => (
                   <div key={g.id} style={{
                     background: sel.id===g.id ? g.color+"15" : "#0a141e",
@@ -395,7 +395,7 @@ function ConvergenceMap() {
               <div style={{
                 padding:"10px", borderRadius:3,
                 background:"#fb923c08", border:"1px solid #fb923c28",
-                fontSize:9.5, color:"#b55f20", lineHeight:1.65,
+                fontSize:9.5, color:"#e8943a", lineHeight:1.65,
               }}>
                 ◉ TERMINAL NODE — two parallel paths converge here. Gen1 opens the inner solar system. Gen2 opens everything.
               </div>

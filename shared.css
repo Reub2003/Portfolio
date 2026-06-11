@@ -9,8 +9,8 @@
   --surface:   #141414;
   --surface-2: #1e1e1e;
   --ink:       #f4f4f4;
-  --ink-dim:   #888888;
-  --ink-faint: #444444;
+  --ink-dim:   #aaaaaa;
+  --ink-faint: #666666;
   --rule:        rgba(255,255,255,0.08);
   --rule-strong: rgba(255,255,255,0.22);
   --accent:     #e8eaed;
@@ -313,8 +313,8 @@ footer.foot a:hover { color: var(--ink); }
 }
 .sec-head .tail {
   font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-faint);
+  font-size: 12px;
+  color: var(--ink-dim);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding-top: 18px;
