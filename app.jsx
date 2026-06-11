@@ -2,7 +2,7 @@
 // Each page mounts <TweaksApp/> into #tweaks-root. The panel posts edits to
 // localStorage so navigating to another page keeps the same look.
 
-const STORAGE_KEY = 'reuben.tweaks.v1';
+const STORAGE_KEY = 'reuben.tweaks.v2';
 
 const PALETTES = {
   navyAmber:    { bg:'#06101c', surface:'#0c1726', surface2:'#131f30',
@@ -28,10 +28,10 @@ const FONTS = {
 const DENSITY = { compact:0.85, regular:1, comfy:1.15 };
 
 const DEFAULTS = {
-  palette: 'navyAmber',
+  palette: 'inkWhite',
   font: 'archivo',
   density: 'regular',
-  accent: '#f7a13c',
+  accent: '#e8eaed',
 };
 
 // Read persisted tweaks BEFORE first paint — also called from inline <head> script.
