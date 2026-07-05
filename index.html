@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Reuben Larsen — Aerospace Engineer</title>
+<meta name="description" content="Portfolio of Reuben Larsen — aerospace engineering student at UNSW Sydney. Bearing vibration thesis, BlueSAT groundstation, CFD & FEM simulation, and $148M infrastructure site experience." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Reuben Larsen — Aerospace Engineering, UNSW" />
+<meta property="og:description" content="Portfolio of Reuben Larsen — aerospace engineering student at UNSW Sydney. Bearing vibration thesis, BlueSAT groundstation, CFD & FEM simulation, and $148M infrastructure site experience." />
+<meta property="og:image" content="https://reub2003.github.io/Portfolio/images/cfd-fem/cfdimage.jpg" />
+<meta property="og:url" content="https://reub2003.github.io/Portfolio/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="shared.css" />
 <style>
   /* ── Hero (home) ─────────────────────────────────── */
@@ -733,7 +741,7 @@
 
     <a href="projects/cfd-fem.html" class="work-card">
       <div class="work-card-img" style="background:#111;">
-        <img src="images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <img src="images/cfd-fem/cfdimage.jpg" alt="CFD battery cooling chamber" style="width:100%;height:100%;object-fit:cover;display:block;" />
       </div>
       <div class="work-card-body">
         <div class="work-card-num">/ 03</div>
@@ -895,6 +903,18 @@
 
   @media (max-width: 920px) {
     .origin { grid-template-columns: 1fr; }
+    .featured-grid { grid-template-columns: 1fr; gap: 40px; }
+    .work-cards { grid-template-columns: 1fr 1fr; }
+    .work-card-featured { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; gap: 44px; }
+  }
+  @media (max-width: 640px) {
+    .hero h1 { font-size: clamp(40px, 13.5vw, 72px); }
+    .work-cards { grid-template-columns: 1fr; }
+    .work-card-featured .work-card-img { min-height: 220px; }
+    .scroll-cue, .hud-corner { display: none; }
+    .origin-timeline { grid-template-columns: 1fr; }
+    .hero-content { padding-top: calc(110px * var(--d)); }
   }
 </style>
 

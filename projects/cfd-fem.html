@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CFD & FEM — University Simulation Projects · Reuben Larsen</title>
+<meta name="description" content="University simulation projects: CFD battery cooling chamber and coupled thermal-structural FEM brake disc analysis, with full reports." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="CFD & FEM — Reuben Larsen" />
+<meta property="og:description" content="University simulation projects: CFD battery cooling chamber and coupled thermal-structural FEM brake disc analysis, with full reports." />
+<meta property="og:image" content="https://reub2003.github.io/Portfolio/images/cfd-fem/cfdimage.jpg" />
+<meta property="og:url" content="https://reub2003.github.io/Portfolio/projects/cfd-fem.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="stylesheet" href="../shared.css" />
 <style>
   .proj-hero {
@@ -249,6 +257,11 @@
     .proj-outcomes { grid-template-columns: 1fr; gap: 32px; }
     .proj-hero .meta-strip { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 640px) {
+    .proj-hero { padding-top: calc(120px * var(--d)); }
+    .proj-hero h1 { font-size: clamp(38px, 13vw, 60px); }
+    .proj-nav { flex-wrap: wrap; justify-content: flex-start; }
+  }
 </style>
 </head>
 <body>
@@ -322,7 +335,7 @@
 </section>
 
 <div class="proj-hero-media">
-  <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" />
+  <img src="../images/cfd-fem/cfdimage.jpg" alt="CFD battery cooling chamber" />
 </div>
 
 <section class="proj-overview shell">
@@ -359,11 +372,11 @@
   </div>
   <div class="grid">
     <div class="slot wide">
-      <img src="../images/cfd-fem/cfdimage.png" alt="CFD battery cooling chamber" />
+      <img src="../images/cfd-fem/cfdimage.jpg" alt="CFD battery cooling chamber" />
       <div class="caption">CFD — Battery cooling chamber · Temperature field</div>
     </div>
     <div class="slot">
-      <img src="../images/cfd-fem/femimage.png" alt="FEM brake disc mesh" />
+      <img src="../images/cfd-fem/femimage.jpg" alt="FEM brake disc mesh" />
       <div class="caption">FEM — Brake disc · Full mesh</div>
     </div>
     <div class="slot">
@@ -385,7 +398,7 @@
       <span class="paper-title">CFD — Battery Cooling Chamber · MECH4620</span>
       <a href="../papers/cfd-report.pdf" target="_blank" class="paper-link">Open PDF ↗</a>
     </div>
-    <iframe src="../papers/cfd-report.pdf" title="CFD report"></iframe>
+    <iframe src="../papers/cfd-report.pdf" title="CFD report" loading="lazy"></iframe>
   </div>
   <div class="paper-block">
     <div class="paper-label">
@@ -393,7 +406,7 @@
       <span class="paper-title">FEM — Brake Disc Thermal-Structural Analysis</span>
       <a href="../papers/fem-report.pdf" target="_blank" class="paper-link">Open PDF ↗</a>
     </div>
-    <iframe src="../papers/fem-report.pdf" title="FEM report"></iframe>
+    <iframe src="../papers/fem-report.pdf" title="FEM report" loading="lazy"></iframe>
   </div>
 </section>
 
@@ -430,7 +443,6 @@
   <div class="col">
     <b>ELSEWHERE</b>
     <a href="https://github.com/Reub2003">GITHUB ↗</a>
-    <a href="mailto:hello@example.com">EMAIL ↗</a>
     <a href="../blog.html">RSS ↗</a>
   </div>
   <div class="col">

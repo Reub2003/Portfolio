@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dashboard — Reuben Larsen</title>
+<meta name="description" content="A living technology-convergence roadmap: launch, robotics, AI, fusion, and the path to an accessible solar system." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Dashboard — Reuben Larsen" />
+<meta property="og:description" content="A living technology-convergence roadmap: launch, robotics, AI, fusion, and the path to an accessible solar system." />
+<meta property="og:image" content="https://reub2003.github.io/Portfolio/images/cfd-fem/cfdimage.jpg" />
+<meta property="og:url" content="https://reub2003.github.io/Portfolio/dashboard.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="shared.css" />
 <style>
   /* ── Page hero ──────────────────────────────── */
@@ -32,6 +40,13 @@
     grid-template-columns: 1.4fr 1fr;
     gap: 60px;
     align-items: end;
+  }
+  @media (max-width: 920px) {
+    .dash-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+  @media (max-width: 640px) {
+    .dash-hero { padding-top: calc(120px * var(--d)); }
+    .dash-hero h1 { font-size: clamp(40px, 13vw, 64px); }
   }
   .dash-hero h1 {
     font-family: var(--font-display);
@@ -728,7 +743,6 @@
   <div class="col">
     <b>ELSEWHERE</b>
     <a href="https://github.com/Reub2003">GITHUB ↗</a>
-    <a href="mailto:hello@example.com">EMAIL ↗</a>
     <a href="blog.html">RSS ↗</a>
   </div>
   <div class="col">

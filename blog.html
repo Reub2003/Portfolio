@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Log — Reuben Larsen</title>
+<meta name="description" content="Engineering log — build notes and thinking from Reuben Larsen's projects." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Log — Reuben Larsen" />
+<meta property="og:description" content="Engineering log — build notes and thinking from Reuben Larsen's projects." />
+<meta property="og:image" content="https://reub2003.github.io/Portfolio/images/cfd-fem/cfdimage.jpg" />
+<meta property="og:url" content="https://reub2003.github.io/Portfolio/blog.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="shared.css" />
 <style>
   /* Page-specific */
@@ -237,6 +245,10 @@
     .notebook { grid-template-columns: 1fr; }
     .side { position: static; }
   }
+  @media (max-width: 640px) {
+    .log-entry { grid-template-columns: 1fr; gap: 8px; }
+    .log-entry .arrow { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -383,7 +395,6 @@
   <div class="col">
     <b>ELSEWHERE</b>
     <a href="https://github.com/Reub2003">GITHUB ↗</a>
-    <a href="mailto:hello@example.com">EMAIL ↗</a>
     <a href="#">RSS ↗</a>
   </div>
   <div class="col">

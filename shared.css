@@ -428,6 +428,43 @@ footer.foot a:hover { color: var(--ink); }
   border-right: 1px solid var(--accent);
 }
 
+/* ── Mobile ───────────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  :root {
+    --pad-x: calc(20px * var(--d));
+    --pad-y: calc(72px * var(--d));
+  }
+  .topbar {
+    padding: 12px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .topbar .brand .meta i { display: none; }
+  .topbar .brand { gap: 10px; }
+  .topnav { gap: 14px; }
+  .topnav .num-tag { display: none; }
+  .topnav a.active::before { display: none; }
+
+  .telemetry { grid-template-columns: 1fr 1fr; }
+  .telemetry .cell { border-bottom: 1px solid var(--rule); }
+  .telemetry .cell:nth-child(even) { border-right: none; }
+  .telemetry .cell:nth-last-child(-n+2) { border-bottom: none; }
+
+  .sec-head { flex-wrap: wrap; gap: 8px 20px; }
+  .sec-head .tail { text-align: left; padding-top: 0; width: 100%; }
+
+  footer.foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 48px var(--pad-x) 32px;
+  }
+  footer.foot .col[style*="text-align:right"] { text-align: left !important; }
+
+  .work-dropdown { display: none !important; }
+}
+
 /* ── Selection ────────────────────────────────────────── */
 
 ::selection { background: var(--accent); color: var(--bg-deep); }

@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BlueSAT — Groundstation Lead · RF · Reuben Larsen</title>
+<meta name="description" content="Leading the groundstation team at BlueSAT UNSW — RF, antennas, and satellite tracking." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="BlueSAT Groundstation — Reuben Larsen" />
+<meta property="og:description" content="Leading the groundstation team at BlueSAT UNSW — RF, antennas, and satellite tracking." />
+<meta property="og:image" content="https://reub2003.github.io/Portfolio/images/cfd-fem/cfdimage.jpg" />
+<meta property="og:url" content="https://reub2003.github.io/Portfolio/projects/bluesat.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="stylesheet" href="../shared.css" />
 <style>
   .proj-hero {
@@ -209,6 +217,11 @@
     .proj-outcomes { grid-template-columns: 1fr; gap: 32px; }
     .proj-hero .meta-strip { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 640px) {
+    .proj-hero { padding-top: calc(120px * var(--d)); }
+    .proj-hero h1 { font-size: clamp(38px, 13vw, 60px); }
+    .proj-nav { flex-wrap: wrap; justify-content: flex-start; }
+  }
 </style>
 </head>
 <body>
@@ -216,15 +229,15 @@
 <script>
   (function(){
     try {
-      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v1') || '{}');
-      var a = t.accent || '#f7a13c';
+      var t = JSON.parse(localStorage.getItem('reuben.tweaks.v2') || '{}');
+      var a = t.accent || '#e8eaed';
       var P = {
         navyAmber:    {bg:'#06101c',surface:'#0c1726',s2:'#131f30',ink:'#e8edf3',dim:'#8493a5',faint:'#4a5668'},
         inkWhite:     {bg:'#0a0a0a',surface:'#141414',s2:'#1d1d1d',ink:'#f4f4f4',dim:'#888888',faint:'#444444'},
         charcoalCyan: {bg:'#0e1418',surface:'#161e24',s2:'#1f2a32',ink:'#e8eef2',dim:'#7e8e98',faint:'#475058'},
         hudGreen:     {bg:'#080c0a',surface:'#0e1410',s2:'#161e18',ink:'#e6f0e8',dim:'#7c8e80',faint:'#465048'},
       };
-      var p = P[t.palette] || P.navyAmber;
+      var p = P[t.palette] || P.inkWhite;
       var s = document.documentElement.style;
       s.setProperty('--bg', p.bg); s.setProperty('--surface', p.surface);
       s.setProperty('--surface-2', p.s2); s.setProperty('--ink', p.ink);
@@ -362,7 +375,6 @@
   <div class="col">
     <b>ELSEWHERE</b>
     <a href="https://github.com/Reub2003">GITHUB ↗</a>
-    <a href="mailto:hello@example.com">EMAIL ↗</a>
     <a href="../blog.html">RSS ↗</a>
   </div>
   <div class="col">

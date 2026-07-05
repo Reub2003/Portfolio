@@ -125,8 +125,14 @@ function ConvergenceMap() {
   const [selected, setSelected] = useState(null);
   const [hovered,  setHovered]  = useState(null);
   const [visible,  setVisible]  = useState(false);
+  const [narrow,   setNarrow]   = useState(window.innerWidth < 760);
 
   useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
+  useEffect(() => {
+    const onResize = () => setNarrow(window.innerWidth < 760);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const focus = selected || hovered;
   const getNode = id => CM_NODES.find(n => n.id === id);
@@ -170,11 +176,11 @@ function ConvergenceMap() {
         .cm3-close:hover { border-color:#475569; color:#94a3b8; }
       `}</style>
 
-    <div style={{ display:"flex", position:"relative", background:"#0a0a0a" }}>
+    <div style={{ display:"flex", flexDirection: narrow ? "column" : "row", position:"relative", background:"#0a0a0a", maxWidth:"100%" }}>
       <div className="cm3-grid" />
 
-      {/* SVG graph — fixed width, never resizes when panel opens */}
-      <div style={{ flex:"0 0 560px", position:"relative", zIndex:1 }}>
+      {/* SVG graph — fixed width on desktop, fluid on mobile */}
+      <div style={{ flex: narrow ? "1 1 auto" : "0 0 560px", width: narrow ? "100%" : undefined, maxWidth:"100%", position:"relative", zIndex:1 }}>
         <svg
           viewBox="0 0 100 182"
           style={{ width:"100%", display:"block" }}
@@ -284,14 +290,17 @@ function ConvergenceMap() {
         </svg>
       </div>
 
-      {/* Detail panel — transitions from 0 to fixed width; centering div handles map shift */}
+      {/* Detail panel — side column on desktop, stacked below map on mobile */}
       <div style={{
-        width: sel ? 320 : 0, flexShrink:0, overflow:"hidden",
-        transition:"width .45s cubic-bezier(.4,0,.2,1)", position:"relative", zIndex:2,
+        width: narrow ? "100%" : (sel ? 320 : 0),
+        maxHeight: narrow ? (sel ? 900 : 0) : undefined,
+        flexShrink:0, overflow:"hidden",
+        transition: narrow ? "max-height .45s cubic-bezier(.4,0,.2,1)" : "width .45s cubic-bezier(.4,0,.2,1)",
+        position:"relative", zIndex:2,
       }}>
         {sel && (
           <div className="cm3-panel-in" style={{
-            width:320, overflowY:"auto",
+            width: narrow ? "100%" : 320, overflowY:"auto",
             background:"linear-gradient(180deg,#080f1a,#050b14)",
             borderLeft:`1px solid ${sel.color}28`,
             padding:"20px 16px", display:"flex", flexDirection:"column", gap:13,
